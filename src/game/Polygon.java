@@ -48,10 +48,10 @@ class Polygon {
       Point p = shape[i];
       double x = ((p.x-center.x) * Math.cos(Math.toRadians(rotation)))
                - ((p.y-center.y) * Math.sin(Math.toRadians(rotation)))
-               + center.x/2 + position.x;
+               + center.x + position.x;
       double y = ((p.x-center.x) * Math.sin(Math.toRadians(rotation)))
                + ((p.y-center.y) * Math.cos(Math.toRadians(rotation)))
-               + center.y/2 + position.y;
+               + center.y + position.y;
       points[i] = new Point(x,y);
     }
     return points;
