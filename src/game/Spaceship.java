@@ -1,6 +1,10 @@
 package game;
 
-public class Spaceship extends Polygon implements Collidable {
+import java.awt.Graphics;
+import java.awt.event.*;
+import java.util.Arrays;
+
+public class Spaceship extends Polygon implements Collidable, KeyListener {
 	
 	/*
 	1. constructor to create spaceship
@@ -23,7 +27,14 @@ public class Spaceship extends Polygon implements Collidable {
 	
 	 */
 	
-	int speed = 0;
+	int speed = 10;
+	Direction direction = Direction.NONE;
+	
+	private enum Direction {
+		UP, 
+		DOWN, 
+		NONE
+	}
 	
 	private class Laser extends Polygon {
 		int laserSpeed = 0;
@@ -36,8 +47,82 @@ public class Spaceship extends Polygon implements Collidable {
 	// may add more parameters
     public Spaceship(Point[] points, Point offset, double rotation) {
         super (points, offset, rotation);
+
+        
+    }
+    
+    public void paint(Graphics brush) {
+    	// access Polygon's shape instance variable 
+    	Point[] spaceshipPoints = this.getPoints();
+    	
+    	// loop through Polygon instance variable for points   	
+    	int numPoints = spaceshipPoints.length;
+    	int[] xPoints = new int[numPoints], yPoints = new int[numPoints];
+    	
+    	// create two arrays for x-coords and y-coords
+    	for (int idx = 0; idx < numPoints; idx++) {
+    		xPoints[idx] = (int) spaceshipPoints[idx].getX();
+    		yPoints[idx] = (int) spaceshipPoints[idx].getY();
+    	}
+    	
+    	// call brush drawing method
+    	brush.fillPolygon(xPoints, yPoints, numPoints);
     }
 
+    public void move() {
+
+    	
+    	// check if spaceship moving up
+    	if (this.direction == Direction.UP) {
+    		updatePoints();
+        	System.out.println(this.getPoints()[0].getX());
+    	// check if spaceship moving down
+    	} else if (this.direction == Direction.DOWN) {
+    		
+    		updatePoints();
+    	}	
+    }
+    
+    private void updatePoints() {
+    	Point[] spaceshipPoints = this.getPoints();
+    	
+    	for (int i = 0; i < spaceshipPoints.length; i++) {
+    		spaceshipPoints[i].setX(500);// Math.cos(Math.toRadians(this.rotation)));
+    		//System.out.println(p.getX());
+    	}
+    	/*
+       	for (Point p : this.getPoints()) {
+    		p.setY(p.getY() + -10 * Math.sin(Math.toRadians(this.rotation)));
+    	}
+    	*/
+    	
+    }
+    
+    public void keyPressed(KeyEvent e) {
+    	
+    	System.out.println(this.direction);
+    	int currKey = e.getKeyCode();
+   		System.out.println(currKey);
+    	
+    	
+    	if (currKey == 38) {
+    		this.direction = Direction.UP;
+    	} 
+    	
+    	if (currKey == 40) {
+    		this.direction = Direction.DOWN;
+    	} 
+    	
+    }
+    
+    public void keyReleased(KeyEvent e) {
+    	//this.direction = Direction.NONE;
+    }
+    
+    public void keyTyped(KeyEvent e) {
+    	
+    }
+    
 	@Override
 	public boolean isCollision(Collidable other) {
 		// TODO Auto-generated method stub

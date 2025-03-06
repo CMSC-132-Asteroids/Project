@@ -10,22 +10,23 @@ NOTE: This class is the metaphorical "main method" of your program,
 import java.awt.*;
 import java.awt.event.*;
 
-class Asteroids extends Game {
+class AsteroidsGame extends Game {
 	static int counter = 0;
+	
 	/*
 	instance variables to keep track of objects?
 	- spaceship
 	- arraylist of asteroids (may contain golden asteroid)
 	- current boss
 	 */
-
-	public Asteroids() {
+	Spaceship s = new Spaceship(new Point[] {new Point(0, 0), new Point(30, 0), new Point(15, 30)}, new Point(400, 300), 180.0);
+	
+	public AsteroidsGame() {
 		super("YourGameName!",800,600);
 		this.setFocusable(true);
 		this.requestFocus();
+		this.addKeyListener(s);
 		
-		// private method that will call other methods that initialize game
-		initializeGame();
 	}
 
 	// this method is called by a.repaint() in main continuously
@@ -43,20 +44,23 @@ class Asteroids extends Game {
 		brush.drawString("Counter is " + counter,10,10);
 		
 		// method to begin game initialization
-		
+		updateGame(brush);
 	}
 
 	// private method to initialize game
-	private void initializeGame() {
+	private void updateGame(Graphics brush) {
+		updateSpaceship(brush);
 		
-		/*
-		- create spaceship
-		- 
-		 */
+	}
+	
+	private void updateSpaceship(Graphics brush) {
+		s.move();
+		s.paint(brush);
+		
 	}
 
 	public static void main (String[] args) {
-		Asteroids a = new Asteroids();
+		AsteroidsGame a = new AsteroidsGame();
 		a.repaint();
 	}
 }
