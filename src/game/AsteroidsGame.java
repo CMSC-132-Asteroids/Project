@@ -11,7 +11,7 @@ import java.awt.*;
 import java.awt.event.*;
 
 class AsteroidsGame extends Game {
-	static int counter = 0;
+	static int point = 0;
 	
 	/*
 	instance variables to keep track of objects?
@@ -22,7 +22,7 @@ class AsteroidsGame extends Game {
 	Spaceship s = new Spaceship(new Point[] {new Point(0, 0), new Point(30, 0), new Point(15, 30)}, new Point(400, 300), 180.0);
 	
 	public AsteroidsGame() {
-		super("YourGameName!",800,600);
+		super("Asteroids!",800,600);
 		this.setFocusable(true);
 		this.requestFocus();
 		this.addKeyListener(s);
@@ -39,9 +39,8 @@ class AsteroidsGame extends Game {
 		// sample code for printing message for debugging
 		// counter is incremented and this message printed
 		// each time the canvas is repainted
-		counter++;
 		brush.setColor(Color.white);
-		brush.drawString("Counter is " + counter,10,10);
+		brush.drawString("Points: " + point ,20,20);
 		
 		// method to begin game initialization
 		updateGame(brush);
