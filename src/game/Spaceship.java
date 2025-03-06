@@ -1,6 +1,6 @@
 package game;
 
-public class Spaceship extends Polygon {
+public class Spaceship extends Polygon implements Collidable {
 	
 	/*
 	1. constructor to create spaceship
@@ -23,8 +23,31 @@ public class Spaceship extends Polygon {
 	
 	 */
 	
+	int speed = 0;
+	
+	private class Laser extends Polygon {
+		int laserSpeed = 0;
+		
+		public Laser(Point[] points, Point offset, double rotation, Point p) {
+			super(points, offset, rotation);
+		}
+	}
+ 	
 	// may add more parameters
     public Spaceship(Point[] points, Point offset, double rotation) {
         super (points, offset, rotation);
     }
+
+	@Override
+	public boolean isCollision(Collidable other) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public void collide() {
+		// TODO Auto-generated method stub
+		
+	}
+    
 }

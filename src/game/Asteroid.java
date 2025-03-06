@@ -19,5 +19,5 @@ public class Asteroid extends Polygon {
 	
     public Asteroid(Point[] points, Point offset, double rotation) {
         super (points, offset, rotation);
-    }
+    }    
 }

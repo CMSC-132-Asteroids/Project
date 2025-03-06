@@ -10,7 +10,7 @@ NOTE: This class is the metaphorical "main method" of your program,
 import java.awt.*;
 import java.awt.event.*;
 
-class YourGameName extends Game {
+class Asteroids extends Game {
 	static int counter = 0;
 	/*
 	instance variables to keep track of objects?
@@ -19,7 +19,7 @@ class YourGameName extends Game {
 	- current boss
 	 */
 
-	public YourGameName() {
+	public Asteroids() {
 		super("YourGameName!",800,600);
 		this.setFocusable(true);
 		this.requestFocus();
@@ -56,7 +56,7 @@ class YourGameName extends Game {
 	}
 
 	public static void main (String[] args) {
-		YourGameName a = new YourGameName();
+		Asteroids a = new Asteroids();
 		a.repaint();
 	}
 }
