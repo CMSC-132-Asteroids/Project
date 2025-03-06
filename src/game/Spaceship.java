@@ -71,7 +71,11 @@ public class Spaceship extends Polygon implements Collidable, KeyListener {
 
     public void move() {
 
+    	Point currPos = this.position;
+       	currPos.setX(currPos.getX() + 1.5);
+       	
     	
+    	/*
     	// check if spaceship moving up
     	if (this.direction == Direction.UP) {
     		updatePoints();
@@ -81,6 +85,8 @@ public class Spaceship extends Polygon implements Collidable, KeyListener {
     		
     		updatePoints();
     	}	
+    	*/
+    	
     }
     
     private void updatePoints() {
