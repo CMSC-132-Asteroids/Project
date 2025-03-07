@@ -9,6 +9,7 @@ NOTE: This class is the metaphorical "main method" of your program,
  */
 import java.awt.*;
 import java.awt.event.*;
+import java.util.Arrays;
 
 class AsteroidsGame extends Game {
 	static int points = 0;
@@ -20,15 +21,33 @@ class AsteroidsGame extends Game {
 	- current boss
 	 */
 	Spaceship spaceship;
+	Background background;
+	
+
 	
 	public AsteroidsGame() {
-		super("Asteroids!",800,600);
+		super("Asteroids!", 0, 0);
 		this.setFocusable(true);
 		this.requestFocus();
 		
+		// initialize background
+		initializeBackground();
+		
 		// create spaceship, track keystrokes for movement
 		initializeSpaceship();
-		this.addKeyListener(spaceship);
+
+	}
+	
+	public void initializeBackground() {
+		
+		// create rectangle background
+		Point[] backgroundPoints = {new Point(0,0), new Point(this.width, 0), 
+				new Point(this.width, this.height), new Point(0, this.height)};
+		Point offset = new Point(0,0);
+		double rotation = 0.0;
+		System.out.println(this.height);
+		this.background = new Background(backgroundPoints, offset, rotation);
+		
 	}
 	
 	public void initializeSpaceship() {
@@ -42,18 +61,17 @@ class AsteroidsGame extends Game {
 		 // calculate offset to place center of spaceship at center of screen
 		 int xCenter = this.width / 2 - length / 2, yCenter = this.height / 2 - 
 				 height / 2; 
-		 System.out.println(xCenter);
-		 System.out.println(yCenter);
 
 		 Point position = new Point(xCenter, yCenter); 
 		 double rotation = 180.0;
 		 this.spaceship = new Spaceship(spaceshipPoints, position, rotation);
+
+		 // give spaceship a way to track keys
+		this.addKeyListener(spaceship);
 	}
 
 	// continuously calls paint method
 	public void paint(Graphics brush) {
-		brush.setColor(Color.black);
-		brush.fillRect(0,0,width,height);
 
 		// update points
 		brush.setColor(Color.white);
@@ -63,15 +81,33 @@ class AsteroidsGame extends Game {
 		updateGame(brush);
 	}
 
+	private void adjustSpaceshipPosition() {
+		Point[] spaceshipPoints = this.spaceship.getPoints();
+		for (Point p : spaceshipPoints) {
+			if (this.background.contains(p)) { 
+				return;
+			}
+			this.spaceship.wrapScreen(this.width, this.height);
+		}
+	}
+	
 	// update spaceship (and lasers), asteroids and boss
 	private void updateGame(Graphics brush) {
 		
+		// update backgroudn
+		brush.setColor(Color.yellow);
+		this.background.paint(brush);
+		
 		// move and update spaceship (includes lasers)
-		spaceship.move();
-		spaceship.paint(brush);
+		brush.setColor(Color.red);
+		this.spaceship.move();
+		this.spaceship.paint(brush);
+		adjustSpaceshipPosition();
+		
 		
 		// move and update all asteroids
 		
+
 	}
 
 	public static void main (String[] args) {

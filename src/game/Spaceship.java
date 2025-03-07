@@ -4,7 +4,7 @@ import java.awt.Graphics;
 import java.awt.event.*;
 import java.util.Arrays;
 import java.util.*;
-public class Spaceship extends Polygon implements Collidable, KeyListener {
+public class Spaceship extends Polygon implements KeyListener {
 	
 	/*
 	1. constructor to create spaceship
@@ -29,7 +29,7 @@ public class Spaceship extends Polygon implements Collidable, KeyListener {
 	
 	// set can check if multiple keys are pressed concurrently
 	final static Set<Integer> currKeys = new HashSet<Integer>();
-	final static double velocity = 3.0;
+	final static double velocity = 5.0;
 	Direction direction;
 	ArrayList<Laser> lasers;
 	
@@ -60,27 +60,10 @@ public class Spaceship extends Polygon implements Collidable, KeyListener {
         
     }
     
-    public void paint(Graphics brush) {
-    	
-    	// access Polygon's shape instance variable 
-    	Point[] spaceshipPoints = this.getPoints();
-    	
-    	// loop through Polygon instance variable for points   	
-    	int numPoints = spaceshipPoints.length;
-    	int[] xPoints = new int[numPoints], yPoints = new int[numPoints];
-    	
-    	// create two arrays for x-coords and y-coords
-    	for (int idx = 0; idx < numPoints; idx++) {
-    		xPoints[idx] = (int) spaceshipPoints[idx].getX();
-    		yPoints[idx] = (int) spaceshipPoints[idx].getY();
-    	}
-    	
-    	// cdraw spaceship using x-coords and y-coords
-    	brush.fillPolygon(xPoints, yPoints, numPoints);
-    }
+
 
     public void move() {
-
+    	//System.out.println(this.position);
     	// find current position and get x and y coords
     	Point currPos = this.position;
     	double currX = currPos.getX(), currY = currPos.getY();
@@ -100,12 +83,12 @@ public class Spaceship extends Polygon implements Collidable, KeyListener {
     	}
     	
     	if (currKeys.contains(KeyEvent.VK_LEFT) || currKeys.contains(KeyEvent.VK_A)) {
-    		this.rotate(-2);
+    		this.rotate(-3);
     	} else if (currKeys.contains(KeyEvent.VK_RIGHT) || currKeys.contains(KeyEvent.VK_D)) {
-    		this.rotate(2);
+    		this.rotate(3);
     	}
     	
-    	if(currKeys.contains(KeyEvent.VK_SPACE)) {
+    	if (currKeys.contains(KeyEvent.VK_SPACE)) {
     		Point[] laserPoints = {new Point(currPos.getX(), currPos.getY()), new Point(currPos.getX() - 20, currPos.getY() - 20)};
     		Laser objLaser = new Laser(laserPoints, new Point(0,0), 0);
     		
@@ -119,11 +102,32 @@ public class Spaceship extends Polygon implements Collidable, KeyListener {
     	currPos.setY(currY - changeY * movementFactor);
        		
     }
+    
+    public void wrapScreen(int width, int height) {
+    	
+    	Point position = this.position;
+    	double currX = position.getX();
+    	double currY = position.getY();
+    	
+    	
+    	// check left of screen
+    	if (currX <= 0) {
+    		position.setX(currX + width);
+    	} else if (currX > width) {
+    		position.setX(currX - width);
+    	} else if (currY <= 0) {
+    		position.setY(currY + height);
+    	} else if (currY > height) {
+    		position.setY(currY - height);
+    	}
+    }
+    
 
     public void keyPressed(KeyEvent e) {
     	
     	// add to set of pressed keys
     	currKeys.add(e.getKeyCode());
+    	
     }
     
     public void keyReleased(KeyEvent e) {
@@ -136,16 +140,6 @@ public class Spaceship extends Polygon implements Collidable, KeyListener {
     	
     }
     
-	@Override
-	public boolean isCollision(Collidable other) {
-		// TODO Auto-generated method stub
-		return false;
-	}
 
-	@Override
-	public void collide() {
-		// TODO Auto-generated method stub
-		
-	}
     
 }

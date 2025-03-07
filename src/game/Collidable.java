@@ -25,7 +25,6 @@ public interface Collidable {
 	
 	 */
 	
-	public boolean isCollision(Collidable other);
+	public boolean collides(Collidable other);
 	
-	public void collide();
 }
