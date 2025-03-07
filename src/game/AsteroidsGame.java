@@ -11,7 +11,7 @@ import java.awt.*;
 import java.awt.event.*;
 
 class AsteroidsGame extends Game {
-	static int point = 0;
+	static int points = 0;
 	
 	/*
 	instance variables to keep track of objects?
@@ -19,42 +19,47 @@ class AsteroidsGame extends Game {
 	- arraylist of asteroids (may contain golden asteroid)
 	- current boss
 	 */
-	Spaceship s = new Spaceship(new Point[] {new Point(0, 0), new Point(30, 0), new Point(15, 30)}, new Point(400, 300), 180.0);
+	Spaceship spaceship;
 	
 	public AsteroidsGame() {
 		super("Asteroids!",800,600);
 		this.setFocusable(true);
 		this.requestFocus();
-		this.addKeyListener(s);
 		
+		// create spaceship, track keystrokes for movement
+		initializeSpaceship();
+		this.addKeyListener(spaceship);
+	}
+	
+	public void initializeSpaceship() {
+		 Point[] spaceshipPoints = {new Point(0, 0), new Point(30, 0), new 
+				 Point(15, 30)};
+		 Point position = new Point(400, 300); 
+		 double rotation = 180.0;
+		 this.spaceship= new Spaceship(spaceshipPoints, position, rotation);
 	}
 
-	// this method is called by a.repaint() in main continuously
-	// a.repaint() also calls update() method in Game class
-	
+	// continuously calls paint method
 	public void paint(Graphics brush) {
 		brush.setColor(Color.black);
 		brush.fillRect(0,0,width,height);
 
-		// sample code for printing message for debugging
-		// counter is incremented and this message printed
-		// each time the canvas is repainted
+		// update points
 		brush.setColor(Color.white);
-		brush.drawString("Points: " + point ,20,20);
+		brush.drawString("Points: " + points, 20, 20);
 		
-		// method to begin game initialization
+		// update game 
 		updateGame(brush);
 	}
 
-	// private method to initialize game
+	// update spaceship (and lasers), asteroids and boss
 	private void updateGame(Graphics brush) {
-		updateSpaceship(brush);
 		
-	}
-	
-	private void updateSpaceship(Graphics brush) {
-		s.move();
-		s.paint(brush);
+		// move and update spaceship (includes lasers)
+		spaceship.move();
+		spaceship.paint(brush);
+		
+		// move and update all asteroids
 		
 	}
 

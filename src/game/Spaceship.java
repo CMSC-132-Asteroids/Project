@@ -29,6 +29,7 @@ public class Spaceship extends Polygon implements Collidable, KeyListener {
 	
 	int speed = 10;
 	Direction direction = Direction.NONE;
+	Laser[] lasers;
 	
 	private enum Direction {
 		UP, 
