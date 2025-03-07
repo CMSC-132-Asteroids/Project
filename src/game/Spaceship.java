@@ -27,8 +27,8 @@ public class Spaceship extends Polygon implements Collidable, KeyListener {
 	
 	 */
 	
-	int speed = 10;
-	Direction direction = Direction.NONE;
+	static double velocity = 1.5;
+	Direction direction;
 	Laser[] lasers;
 	
 	private enum Direction {
@@ -48,14 +48,20 @@ public class Spaceship extends Polygon implements Collidable, KeyListener {
 	// may add more parameters
     public Spaceship(Point[] points, Point offset, double rotation) {
         super (points, offset, rotation);
+        this.direction = Direction.NONE;
 
         
     }
     
     public void paint(Graphics brush) {
+    	
+		int length = 30;
+		int height = (int) (Math.sqrt(3) / 2 * length);
+		 Point[] spaceshipPoint = {new Point(0, 0), new Point(length, 0), new 
+				 Point(length/2, height)};
     	// access Polygon's shape instance variable 
     	Point[] spaceshipPoints = this.getPoints();
-    	
+    
     	// loop through Polygon instance variable for points   	
     	int numPoints = spaceshipPoints.length;
     	int[] xPoints = new int[numPoints], yPoints = new int[numPoints];
@@ -66,28 +72,18 @@ public class Spaceship extends Polygon implements Collidable, KeyListener {
     		yPoints[idx] = (int) spaceshipPoints[idx].getY();
     	}
     	
-    	// call brush drawing method
+    	// cdraw spaceship using x-coords and y-coords
     	brush.fillPolygon(xPoints, yPoints, numPoints);
     }
 
     public void move() {
 
+    	// find current position
     	Point currPos = this.position;
-       	currPos.setX(currPos.getX() + 1.5);
-       	
     	
-    	/*
-    	// check if spaceship moving up
-    	if (this.direction == Direction.UP) {
-    		updatePoints();
-        	System.out.println(this.getPoints()[0].getX());
-    	// check if spaceship moving down
-    	} else if (this.direction == Direction.DOWN) {
-    		
-    		updatePoints();
-    	}	
-    	*/
-    	
+    	// increment
+       //	currPos.setX(currPos.getX() + 1.5);
+       		
     }
     
     private void updatePoints() {

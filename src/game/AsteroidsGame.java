@@ -32,11 +32,22 @@ class AsteroidsGame extends Game {
 	}
 	
 	public void initializeSpaceship() {
-		 Point[] spaceshipPoints = {new Point(0, 0), new Point(30, 0), new 
-				 Point(15, 30)};
-		 Point position = new Point(400, 300); 
+		
+		// create equalateral triangle
+		int length = 30;
+		int height = (int) (Math.sqrt(3) / 2 * length);
+		 Point[] spaceshipPoints = {new Point(0, 0), new Point(length, 0), new 
+				 Point(length/2, height)};
+		 
+		 // calculate offset to place center of spaceship at center of screen
+		 int xCenter = this.width / 2 - length / 2, yCenter = this.height / 2 - 
+				 height / 2; 
+		 System.out.println(xCenter);
+		 System.out.println(yCenter);
+
+		 Point position = new Point(xCenter, yCenter); 
 		 double rotation = 180.0;
-		 this.spaceship= new Spaceship(spaceshipPoints, position, rotation);
+		 this.spaceship = new Spaceship(spaceshipPoints, position, rotation);
 	}
 
 	// continuously calls paint method
