@@ -31,7 +31,7 @@ public class Spaceship extends Polygon implements Collidable, KeyListener {
 	final static Set<Integer> currKeys = new HashSet<Integer>();
 	final static double velocity = 3.0;
 	Direction direction;
-	Laser[] lasers;
+	ArrayList<Laser> lasers;
 	
 	private enum Direction {
 		UP, 
@@ -43,8 +43,12 @@ public class Spaceship extends Polygon implements Collidable, KeyListener {
 	private class Laser extends Polygon {
 		int laserSpeed = 0;
 		
-		public Laser(Point[] points, Point offset, double rotation, Point p) {
+		public Laser(Point[] points, Point offset, double rotation) {
 			super(points, offset, rotation);
+		}
+		
+		public void paint(Graphics brush) { 
+			//Paint here
 		}
 	}
  	
@@ -99,6 +103,15 @@ public class Spaceship extends Polygon implements Collidable, KeyListener {
     		this.rotate(-2);
     	} else if (currKeys.contains(KeyEvent.VK_RIGHT) || currKeys.contains(KeyEvent.VK_D)) {
     		this.rotate(2);
+    	}
+    	
+    	if(currKeys.contains(KeyEvent.VK_SPACE)) {
+    		Point[] laserPoints = {new Point(currPos.getX(), currPos.getY()), new Point(currPos.getX() - 20, currPos.getY() - 20)};
+    		Laser objLaser = new Laser(laserPoints, new Point(0,0), 0);
+    		
+    		this.lasers.add(objLaser);
+    		//Spawn new laser and add to laser array
+    		
     	}
     	
     	// lower x/y coords are closer to top left
