@@ -3,7 +3,7 @@ package game;
 import java.awt.Graphics;
 import java.awt.event.*;
 import java.util.Arrays;
-
+import java.util.*;
 public class Spaceship extends Polygon implements Collidable, KeyListener {
 	
 	/*
@@ -27,7 +27,9 @@ public class Spaceship extends Polygon implements Collidable, KeyListener {
 	
 	 */
 	
-	static double velocity = 1.5;
+	// set can check if multiple keys are pressed concurrently
+	final static Set<Integer> currKeys = new HashSet<Integer>();
+	final static double velocity = 3.0;
 	Direction direction;
 	Laser[] lasers;
 	
@@ -36,6 +38,7 @@ public class Spaceship extends Polygon implements Collidable, KeyListener {
 		DOWN, 
 		NONE
 	}
+	
 	
 	private class Laser extends Polygon {
 		int laserSpeed = 0;
@@ -55,13 +58,9 @@ public class Spaceship extends Polygon implements Collidable, KeyListener {
     
     public void paint(Graphics brush) {
     	
-		int length = 30;
-		int height = (int) (Math.sqrt(3) / 2 * length);
-		 Point[] spaceshipPoint = {new Point(0, 0), new Point(length, 0), new 
-				 Point(length/2, height)};
     	// access Polygon's shape instance variable 
     	Point[] spaceshipPoints = this.getPoints();
-    
+    	
     	// loop through Polygon instance variable for points   	
     	int numPoints = spaceshipPoints.length;
     	int[] xPoints = new int[numPoints], yPoints = new int[numPoints];
@@ -78,48 +77,46 @@ public class Spaceship extends Polygon implements Collidable, KeyListener {
 
     public void move() {
 
-    	// find current position
+    	// find current position and get x and y coords
     	Point currPos = this.position;
+    	double currX = currPos.getX(), currY = currPos.getY();
     	
-    	// increment
-       //	currPos.setX(currPos.getX() + 1.5);
+    	// change position by velocity * sin/cos of rotation 
+    	double changeX = velocity * Math.cos(Math.toRadians(this.rotation - 90)), 
+    			changeY = velocity * Math.sin(Math.toRadians(this.rotation - 90));
+
+    	// multiply x/y change by 1 or -1 depending on direction
+    	double movementFactor;
+    	if (currKeys.contains(KeyEvent.VK_UP)) {
+    		movementFactor = 1;
+    	} else if (currKeys.contains(KeyEvent.VK_DOWN)) {
+    		movementFactor = -1;
+    	} else {
+    		movementFactor = 0;
+    	}
+    	
+    	if (currKeys.contains(KeyEvent.VK_LEFT)) {
+    		this.rotate(-2);
+    	} else if (currKeys.contains(KeyEvent.VK_RIGHT)) {
+    		this.rotate(2);
+    	}
+    	
+    	// lower x/y coords are closer to top left
+    	currPos.setX(currX - changeX * movementFactor);
+    	currPos.setY(currY - changeY * movementFactor);
        		
     }
-    
-    private void updatePoints() {
-    	Point[] spaceshipPoints = this.getPoints();
-    	
-    	for (int i = 0; i < spaceshipPoints.length; i++) {
-    		spaceshipPoints[i].setX(500);// Math.cos(Math.toRadians(this.rotation)));
-    		//System.out.println(p.getX());
-    	}
-    	/*
-       	for (Point p : this.getPoints()) {
-    		p.setY(p.getY() + -10 * Math.sin(Math.toRadians(this.rotation)));
-    	}
-    	*/
-    	
-    }
-    
+
     public void keyPressed(KeyEvent e) {
     	
-    	System.out.println(this.direction);
-    	int currKey = e.getKeyCode();
-   		System.out.println(currKey);
-    	
-    	
-    	if (currKey == 38) {
-    		this.direction = Direction.UP;
-    	} 
-    	
-    	if (currKey == 40) {
-    		this.direction = Direction.DOWN;
-    	} 
-    	
+    	// add to set of pressed keys
+    	currKeys.add(e.getKeyCode());
     }
     
     public void keyReleased(KeyEvent e) {
-    	//this.direction = Direction.NONE;
+    	
+    	// remove from set of pressed keys
+    	currKeys.remove(e.getKeyCode());
     }
     
     public void keyTyped(KeyEvent e) {
