@@ -87,17 +87,17 @@ public class Spaceship extends Polygon implements Collidable, KeyListener {
 
     	// multiply x/y change by 1 or -1 depending on direction
     	double movementFactor;
-    	if (currKeys.contains(KeyEvent.VK_UP)) {
+    	if (currKeys.contains(KeyEvent.VK_UP) || currKeys.contains(KeyEvent.VK_W)) {
     		movementFactor = 1;
-    	} else if (currKeys.contains(KeyEvent.VK_DOWN)) {
+    	} else if (currKeys.contains(KeyEvent.VK_DOWN) || currKeys.contains(KeyEvent.VK_S)) {
     		movementFactor = -1;
     	} else {
     		movementFactor = 0;
     	}
     	
-    	if (currKeys.contains(KeyEvent.VK_LEFT)) {
+    	if (currKeys.contains(KeyEvent.VK_LEFT) || currKeys.contains(KeyEvent.VK_A)) {
     		this.rotate(-2);
-    	} else if (currKeys.contains(KeyEvent.VK_RIGHT)) {
+    	} else if (currKeys.contains(KeyEvent.VK_RIGHT) || currKeys.contains(KeyEvent.VK_D)) {
     		this.rotate(2);
     	}
     	
