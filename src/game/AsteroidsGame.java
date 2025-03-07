@@ -36,8 +36,8 @@ class AsteroidsGame extends Game {
 		// create equalateral triangle
 		int length = 30;
 		int height = (int) (Math.sqrt(3) / 2 * length);
-		 Point[] spaceshipPoints = {new Point(0, 0), new Point(length/2, height/5),new Point(length, 0), new 
-				 Point(length/2, height)};
+		 Point[] spaceshipPoints = {new Point(0, 0), new Point(length / 2, 
+				 height / 5), new Point(length, 0), new Point(length / 2, height)};
 		 
 		 // calculate offset to place center of spaceship at center of screen
 		 int xCenter = this.width / 2 - length / 2, yCenter = this.height / 2 - 
