@@ -94,12 +94,12 @@ class AsteroidsGame extends Game {
 	// update spaceship (and lasers), asteroids and boss
 	private void updateGame(Graphics brush) {
 		
-		// update backgroudn
-		brush.setColor(Color.yellow);
+		// update background
+		brush.setColor(Color.black);
 		this.background.paint(brush);
 		
 		// move and update spaceship (includes lasers)
-		brush.setColor(Color.red);
+		brush.setColor(Color.white);
 		this.spaceship.move();
 		this.spaceship.paint(brush);
 		adjustSpaceshipPosition();
