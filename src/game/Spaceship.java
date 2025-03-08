@@ -29,12 +29,12 @@ public class Spaceship extends Polygon implements KeyListener {
 	 */
 
 	// set can check if multiple keys are pressed concurrently
-	final static Set<Integer> currKeys = new HashSet<Integer>();
-	static double moveVelocity = 0;
-	static double turnVelocity = 0;
+	private final static Set<Integer> currKeys = new HashSet<Integer>();
+	private static double moveVelocity = 0;
+	private static double turnVelocity = 0;
 	int length, height;
-	Direction direction;
-	ArrayList<Laser> lasers;
+	private Direction direction;
+	private ArrayList<Laser> lasers;
 
 	private enum Direction {
 		UP, 
