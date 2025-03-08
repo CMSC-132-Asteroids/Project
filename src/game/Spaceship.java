@@ -6,7 +6,7 @@ import java.awt.event.*;
 import java.util.Arrays;
 import java.util.*;
 public class Spaceship extends Polygon implements KeyListener {
-	
+
 	/*
 	1. constructor to create spaceship
 	- triangle (for now)
@@ -25,192 +25,213 @@ public class Spaceship extends Polygon implements KeyListener {
 	- lasers start with orientation of spaceship and move toward that direction
 	4. rotation (and possibly movement later)
 	- method to take in input and rotate spaceship accordingly (does input rotation need to != 0)?
-	
+
 	 */
-	
+
 	// set can check if multiple keys are pressed concurrently
 	final static Set<Integer> currKeys = new HashSet<Integer>();
-	final static double velocity = 5.0;
+	static double moveVelocity = 0;
+	static double turnVelocity = 0;
 	int length, height;
 	Direction direction;
 	ArrayList<Laser> lasers;
-	
+
 	private enum Direction {
 		UP, 
 		DOWN, 
 		NONE
 	}
-	
-	
+
+
 	private class Laser extends Polygon {
 		static double laserVel = 10.0;
 		static double laserCD = 0;
-		
+
 		public Laser(Point[] points, Point offset, double rotation) {
 			super(points, offset, rotation);
 		}
-		
+
 		public void paint(Graphics brush) { 
 			brush.setColor(Color.red);
-			
-			
+
+
 			Point[] laserPoints = this.getPoints();
-	    	
-	    	// loop through Polygon instance variable for points   	
-	    	int numPoints = laserPoints.length;
-	    	int[] xPoints = new int[numPoints], yPoints = new int[numPoints];
-	    	
-	    	// create two arrays for x-coords and y-coords
-	    	for (int idx = 0; idx < numPoints; idx++) {
-	    		xPoints[idx] = (int) laserPoints[idx].getX();
-	    		yPoints[idx] = (int) laserPoints[idx].getY();
-	    	}
-	    	
-	    	// cdraw spaceship using x-coords and y-coords
-	    	brush.fillPolygon(xPoints, yPoints, numPoints);
+
+			// loop through Polygon instance variable for points   	
+			int numPoints = laserPoints.length;
+			int[] xPoints = new int[numPoints], yPoints = new int[numPoints];
+
+			// create two arrays for x-coords and y-coords
+			for (int idx = 0; idx < numPoints; idx++) {
+				xPoints[idx] = (int) laserPoints[idx].getX();
+				yPoints[idx] = (int) laserPoints[idx].getY();
+			}
+
+			// cdraw spaceship using x-coords and y-coords
+			brush.fillPolygon(xPoints, yPoints, numPoints);
 
 		}
-		
+
 		public void move() {
 			double changeX = laserVel * Math.cos(Math.toRadians(this.rotation - 90));
 			double changeY = laserVel * Math.sin(Math.toRadians(this.rotation - 90));
-			
+
 			double currX = this.position.getX(), currY = this.position.getY();
 			this.position.setX(currX - changeX);
 			this.position.setY(currY - changeY);
-			
+
 		}
 	}
- 	
+
 	// may add more parameters
-    public Spaceship(Point[] points, Point offset, double rotation, int length, 
-    		int height) {
-        super (points, offset, rotation);
-        this.direction = Direction.NONE;
-        this.lasers =  new ArrayList<Laser>();
-        this.length = length;
-        this.height = height;
-        System.out.println(length);
-        
-    }
-    
-    public void paint(Graphics brush) {
-    	
-    	// access Polygon's shape instance variable 
-    	Point[] spaceshipPoints = this.getPoints();
-    	
-    	// loop through Polygon instance variable for points   	
-    	int numPoints = spaceshipPoints.length;
-    	int[] xPoints = new int[numPoints], yPoints = new int[numPoints];
-    	
-    	// create two arrays for x-coords and y-coords
-    	for (int idx = 0; idx < numPoints; idx++) {
-    		xPoints[idx] = (int) spaceshipPoints[idx].getX();
-    		yPoints[idx] = (int) spaceshipPoints[idx].getY();
-    	}
-    	
-    	// draw spaceship using x-coords and y-coords
-    	brush.fillPolygon(xPoints, yPoints, numPoints);
-    	
-    	for (Laser l : this.lasers) {
-    		l.move();
-    		l.paint(brush);
-    	}
-    }
+	public Spaceship(Point[] points, Point offset, double rotation, int length, 
+			int height) {
+		super (points, offset, rotation);
+		this.direction = Direction.NONE;
+		this.lasers =  new ArrayList<Laser>();
+		this.length = length;
+		this.height = height;
+		System.out.println(length);
+
+	}
+
+	public void paint(Graphics brush) {
+
+		// access Polygon's shape instance variable 
+		Point[] spaceshipPoints = this.getPoints();
+
+		// loop through Polygon instance variable for points   	
+		int numPoints = spaceshipPoints.length;
+		int[] xPoints = new int[numPoints], yPoints = new int[numPoints];
+
+		// create two arrays for x-coords and y-coords
+		for (int idx = 0; idx < numPoints; idx++) {
+			xPoints[idx] = (int) spaceshipPoints[idx].getX();
+			yPoints[idx] = (int) spaceshipPoints[idx].getY();
+		}
+
+		// draw spaceship using x-coords and y-coords
+		brush.fillPolygon(xPoints, yPoints, numPoints);
+
+		for (Laser l : this.lasers) {
+			l.move();
+			l.paint(brush);
+		}
+	}
 
 
-    public void move() {
-    	
-    	// find current position and get x and y coords
-    	Point currPos = this.position;
-    	double currX = currPos.getX(), currY = currPos.getY();
-    	
-    	// change position by velocity * sin/cos of rotation 
-    	double changeX = velocity * Math.cos(Math.toRadians(this.rotation - 90)), 
-    			changeY = velocity * Math.sin(Math.toRadians(this.rotation - 90));
+	public void move() {
+		
+		// dampen move and turn velocity (multiply until 0 each frame)
+		moveVelocity *= 0.95;
+		turnVelocity *= 0.95;
+		
+		// increase/decrease move velocity based on direction
+		if (currKeys.contains(KeyEvent.VK_UP) || currKeys.contains(KeyEvent.VK_W)) {
+			moveVelocity += 0.30;
+		} else if (currKeys.contains(KeyEvent.VK_DOWN) || currKeys.contains(KeyEvent.VK_S)) {
+			moveVelocity -= 0.30;
+		}
 
-    	// multiply x/y change by 1 or -1 depending on direction
-    	double movementFactor;
-    	if (currKeys.contains(KeyEvent.VK_UP) || currKeys.contains(KeyEvent.VK_W)) {
-    		movementFactor = 1;
-    	} else if (currKeys.contains(KeyEvent.VK_DOWN) || currKeys.contains(KeyEvent.VK_S)) {
-    		movementFactor = -1;
-    	} else {
-    		movementFactor = 0;
-    	}
-    	
-    	if (currKeys.contains(KeyEvent.VK_LEFT) || currKeys.contains(KeyEvent.VK_A)) {
-    		this.rotate(-3);
-    	} else if (currKeys.contains(KeyEvent.VK_RIGHT) || currKeys.contains(KeyEvent.VK_D)) {
-    		this.rotate(3);
-    	}
-    	
-    	// lower x/y coords are closer to top left
-    	currPos.setX(currX - changeX * movementFactor);
-    	currPos.setY(currY - changeY * movementFactor);
-    	
-    	if (currKeys.contains(KeyEvent.VK_SPACE)) {
-    		Point frontPoint = this.getPoints()[3];
-    		double centerX = frontPoint.getX(), centerY = frontPoint.getY();
-    		double width = 1, length = 3;
-    		System.out.println("FRONT" + frontPoint);
-    		
-    		Point[] laserPoints = {new Point(centerX, centerY), 
-    				new Point(centerX+width, centerY), 
-    				new Point(centerX+width, centerY+length), 
-    				new Point(centerX, centerY+length)};
+		// increase/decrease turn velocity based on direction
+		if (currKeys.contains(KeyEvent.VK_LEFT) || currKeys.contains(KeyEvent.VK_A)) {
+			turnVelocity -= 0.25;
+		} else if (currKeys.contains(KeyEvent.VK_RIGHT) || currKeys.contains(KeyEvent.VK_D)) {
+			turnVelocity += 0.25;
+		}
+		
+		// find current position and get x and y coords
+		Point currPos = this.position;
+		double currX = currPos.getX(), currY = currPos.getY();
 
-    		System.out.println(new Point(centerX, centerY));
-    		if (Laser.laserCD == 0) {
-    			Laser objLaser = new Laser(laserPoints, new Point(centerX - width / 
-        				2, centerY), 
-        				this.rotation);
-        		this.lasers.add(objLaser);
-        		Laser.laserCD = 10;
-    		}
-    		Laser.laserCD--;
-    	}
-    	
-       		
-    }
-    
-    public void wrapScreen(int width, int height) {
-    	
-    	Point position = this.position;
-    	double currX = position.getX();
-    	double currY = position.getY();
-    	
-    	
-    	// check left of screen
-    	if (currX <= 0) {
-    		position.setX(currX + width);
-    	} else if (currX > width) {
-    		position.setX(currX - width);
-    	} else if (currY <= 0) {
-    		position.setY(currY + height);
-    	} else if (currY > height) {
-    		position.setY(currY - height);
-    	}
-    }
-    
+		// change position by move velocity * sin/cos of rotation 
+		double changeX = moveVelocity * Math.cos(Math.toRadians(this.rotation - 90)), 
+				changeY = moveVelocity * Math.sin(Math.toRadians(this.rotation - 90));
 
-    public void keyPressed(KeyEvent e) {
-    	
-    	// add to set of pressed keys
-    	currKeys.add(e.getKeyCode());
-    	
-    }
-    
-    public void keyReleased(KeyEvent e) {
-    	
-    	// remove from set of pressed keys
-    	currKeys.remove(e.getKeyCode());
-    }
-    
-    public void keyTyped(KeyEvent e) {
-    	
-    }
-    
+		// lower x/y coords are closer to top left 
+		// always update position (if move velocity == 0 -> ship won't move)
+		currPos.setX(currX - changeX);
+		currPos.setY(currY - changeY);
+		
+		// always update rotation (if turn velocity == 0 -> ship won't turn)
+		this.rotate((int) turnVelocity);
 
-    
+		if (currKeys.contains(KeyEvent.VK_SPACE)) {
+			shootLaser();
+		}
+
+
+	}
+	
+	private void shootLaser() {
+		
+		// get the point that corresponds to front of spaceship
+		Point frontPoint = this.getPoints()[3];
+		double laserOriginX = frontPoint.getX();
+		double laserOriginY = frontPoint.getY();
+		
+		// laser size
+		double width = 1, length = 3;
+
+		Point[] laserPoints = {new Point(laserOriginX, laserOriginY), 
+				new Point(laserOriginX + width, laserOriginY), 
+				new Point(laserOriginX + width, laserOriginY + length), 
+				new Point(laserOriginX, laserOriginY + length)};
+		
+		// can shoot a laser when CD == 0
+		if (Laser.laserCD == 0) {
+			
+			// create new laser using at front of ship
+			Laser objLaser = new Laser(laserPoints, 
+					new Point(laserOriginX - width / 2, laserOriginY), 
+					this.rotation);
+			this.lasers.add(objLaser);
+			
+			// set cooldown
+			Laser.laserCD = 10;
+		}
+		
+		// cooldown decremented every time paint is called
+		Laser.laserCD--;
+	}
+	
+	public void wrapScreen(int width, int height) {
+
+		Point position = this.position;
+		double currX = position.getX();
+		double currY = position.getY();
+
+
+		// check left of screen
+		if (currX <= 0) {
+			position.setX(currX + width);
+		} else if (currX > width) {
+			position.setX(currX - width);
+		} else if (currY <= 0) {
+			position.setY(currY + height);
+		} else if (currY > height) {
+			position.setY(currY - height);
+		}
+	}
+
+
+	public void keyPressed(KeyEvent e) {
+
+		// add to set of pressed keys
+		currKeys.add(e.getKeyCode());
+
+	}
+
+	public void keyReleased(KeyEvent e) {
+
+		// remove from set of pressed keys
+		currKeys.remove(e.getKeyCode());
+	}
+
+	public void keyTyped(KeyEvent e) {
+
+	}
+
+
+
 }
