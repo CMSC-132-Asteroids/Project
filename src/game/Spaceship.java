@@ -1,5 +1,6 @@
 package game;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.*;
 import java.util.Arrays;
@@ -31,7 +32,7 @@ public class Spaceship extends Polygon implements Collidable, KeyListener {
 	final static Set<Integer> currKeys = new HashSet<Integer>();
 	final static double velocity = 3.0;
 	Direction direction;
-	ArrayList<Laser> lasers;
+	ArrayList<Laser> lasers = new ArrayList<Laser>();
 	
 	private enum Direction {
 		UP, 
@@ -48,7 +49,24 @@ public class Spaceship extends Polygon implements Collidable, KeyListener {
 		}
 		
 		public void paint(Graphics brush) { 
-			//Paint here
+			brush.setColor(Color.red);
+			
+			
+			Point[] laserPoints = this.getPoints();
+	    	
+	    	// loop through Polygon instance variable for points   	
+	    	int numPoints = laserPoints.length;
+	    	int[] xPoints = new int[numPoints], yPoints = new int[numPoints];
+	    	
+	    	// create two arrays for x-coords and y-coords
+	    	for (int idx = 0; idx < numPoints; idx++) {
+	    		xPoints[idx] = (int) laserPoints[idx].getX();
+	    		yPoints[idx] = (int) laserPoints[idx].getY();
+	    	}
+	    	
+	    	// cdraw spaceship using x-coords and y-coords
+	    	brush.fillPolygon(xPoints, yPoints, numPoints);
+
 		}
 	}
  	
@@ -77,6 +95,10 @@ public class Spaceship extends Polygon implements Collidable, KeyListener {
     	
     	// cdraw spaceship using x-coords and y-coords
     	brush.fillPolygon(xPoints, yPoints, numPoints);
+    	
+    	for(Laser l: this.lasers) {
+    		l.paint(brush);
+    	}
     }
 
     public void move() {
@@ -105,18 +127,18 @@ public class Spaceship extends Polygon implements Collidable, KeyListener {
     		this.rotate(2);
     	}
     	
-    	if(currKeys.contains(KeyEvent.VK_SPACE)) {
-    		Point[] laserPoints = {new Point(currPos.getX(), currPos.getY()), new Point(currPos.getX() - 20, currPos.getY() - 20)};
-    		Laser objLaser = new Laser(laserPoints, new Point(0,0), 0);
-    		
-    		this.lasers.add(objLaser);
-    		//Spawn new laser and add to laser array
-    		
-    	}
-    	
     	// lower x/y coords are closer to top left
     	currPos.setX(currX - changeX * movementFactor);
     	currPos.setY(currY - changeY * movementFactor);
+    	
+    	if(currKeys.contains(KeyEvent.VK_SPACE)) {
+    		double x = currPos.getX(), y = currPos.getY() - 30;
+    		Point[] laserPoints = {new Point(x, y), new Point(x + 10, y + 0), new Point(x + 0, y + 30), new Point(x + 10, y + 30)};
+    		Laser objLaser = new Laser(laserPoints, new Point(0, 0), this.rotation);
+    		
+    		this.lasers.add(objLaser);
+    	}
+    	
        		
     }
 

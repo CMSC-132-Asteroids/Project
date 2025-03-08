@@ -42,8 +42,6 @@ class AsteroidsGame extends Game {
 		 // calculate offset to place center of spaceship at center of screen
 		 int xCenter = this.width / 2 - length / 2, yCenter = this.height / 2 - 
 				 height / 2; 
-		 System.out.println(xCenter);
-		 System.out.println(yCenter);
 
 		 Point position = new Point(xCenter, yCenter); 
 		 double rotation = 180.0;
