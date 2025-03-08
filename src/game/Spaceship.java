@@ -42,7 +42,7 @@ public class Spaceship extends Polygon implements KeyListener {
 	
 	
 	private class Laser extends Polygon {
-		int laserSpeed = 0;
+		double laserVel = 10.0;
 		
 		public Laser(Point[] points, Point offset, double rotation) {
 			super(points, offset, rotation);
@@ -71,6 +71,16 @@ public class Spaceship extends Polygon implements KeyListener {
 	    	// cdraw spaceship using x-coords and y-coords
 	    	brush.fillPolygon(xPoints, yPoints, numPoints);
 
+		}
+		
+		public void move() {
+			double changeX = laserVel * Math.cos(Math.toRadians(this.rotation - 90));
+			double changeY = laserVel * Math.sin(Math.toRadians(this.rotation - 90));
+			
+			double currX = this.position.getX(), currY = this.position.getY();
+			this.position.setX(currX - changeX * 1);
+			this.position.setY(currY - changeY * 1);
+			
 		}
 	}
  	
@@ -101,6 +111,7 @@ public class Spaceship extends Polygon implements KeyListener {
     	brush.fillPolygon(xPoints, yPoints, numPoints);
     	
     	for(Laser l: this.lasers) {
+    		l.move();
     		l.paint(brush);
     	}
     }
@@ -137,9 +148,9 @@ public class Spaceship extends Polygon implements KeyListener {
     	currPos.setY(currY - changeY * movementFactor);
     	
     	if(currKeys.contains(KeyEvent.VK_SPACE)) {
-    		double x = currPos.getX(), y = currPos.getY() - 30;
-    		Point[] laserPoints = {new Point(x, y), new Point(x + 10, y + 0)};
-    		Laser objLaser = new Laser(laserPoints, new Point(0, 0), this.rotation);
+    		double x = currPos.getX(), y = currPos.getY();
+    		Point[] laserPoints = {new Point(x, y), new Point(x + 10, y), new Point(x + 10, y + 20), new Point(x, y + 20)};
+    		Laser objLaser = new Laser(laserPoints, new Point(x + 10, y - 15), this.rotation);
     		
     		this.lasers.add(objLaser);
     	}
