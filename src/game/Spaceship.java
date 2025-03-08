@@ -31,8 +31,9 @@ public class Spaceship extends Polygon implements KeyListener {
 	// set can check if multiple keys are pressed concurrently
 	final static Set<Integer> currKeys = new HashSet<Integer>();
 	final static double velocity = 5.0;
+	int length, height;
 	Direction direction;
-	ArrayList<Laser> lasers = new ArrayList<Laser>();
+	ArrayList<Laser> lasers;
 	
 	private enum Direction {
 		UP, 
@@ -42,7 +43,8 @@ public class Spaceship extends Polygon implements KeyListener {
 	
 	
 	private class Laser extends Polygon {
-		double laserVel = 10.0;
+		static double laserVel = 10.0;
+		static double laserCD = 0;
 		
 		public Laser(Point[] points, Point offset, double rotation) {
 			super(points, offset, rotation);
@@ -54,10 +56,6 @@ public class Spaceship extends Polygon implements KeyListener {
 			
 			Point[] laserPoints = this.getPoints();
 	    	
-			for(Point p: laserPoints) {
-				System.out.println(p.getX());
-				System.out.println(p.getY());
-			}
 	    	// loop through Polygon instance variable for points   	
 	    	int numPoints = laserPoints.length;
 	    	int[] xPoints = new int[numPoints], yPoints = new int[numPoints];
@@ -78,17 +76,21 @@ public class Spaceship extends Polygon implements KeyListener {
 			double changeY = laserVel * Math.sin(Math.toRadians(this.rotation - 90));
 			
 			double currX = this.position.getX(), currY = this.position.getY();
-			this.position.setX(currX - changeX * 1);
-			this.position.setY(currY - changeY * 1);
+			this.position.setX(currX - changeX);
+			this.position.setY(currY - changeY);
 			
 		}
 	}
  	
 	// may add more parameters
-    public Spaceship(Point[] points, Point offset, double rotation) {
+    public Spaceship(Point[] points, Point offset, double rotation, int length, 
+    		int height) {
         super (points, offset, rotation);
         this.direction = Direction.NONE;
-
+        this.lasers =  new ArrayList<Laser>();
+        this.length = length;
+        this.height = height;
+        System.out.println(length);
         
     }
     
@@ -107,10 +109,10 @@ public class Spaceship extends Polygon implements KeyListener {
     		yPoints[idx] = (int) spaceshipPoints[idx].getY();
     	}
     	
-    	// cdraw spaceship using x-coords and y-coords
+    	// draw spaceship using x-coords and y-coords
     	brush.fillPolygon(xPoints, yPoints, numPoints);
     	
-    	for(Laser l: this.lasers) {
+    	for (Laser l : this.lasers) {
     		l.move();
     		l.paint(brush);
     	}
@@ -118,7 +120,7 @@ public class Spaceship extends Polygon implements KeyListener {
 
 
     public void move() {
-    	//System.out.println(this.position);
+    	
     	// find current position and get x and y coords
     	Point currPos = this.position;
     	double currX = currPos.getX(), currY = currPos.getY();
@@ -147,12 +149,26 @@ public class Spaceship extends Polygon implements KeyListener {
     	currPos.setX(currX - changeX * movementFactor);
     	currPos.setY(currY - changeY * movementFactor);
     	
-    	if(currKeys.contains(KeyEvent.VK_SPACE)) {
-    		double x = currPos.getX(), y = currPos.getY();
-    		Point[] laserPoints = {new Point(x, y), new Point(x + 10, y), new Point(x + 10, y + 20), new Point(x, y + 20)};
-    		Laser objLaser = new Laser(laserPoints, new Point(x + 10, y - 15), this.rotation);
+    	if (currKeys.contains(KeyEvent.VK_SPACE)) {
+    		Point frontPoint = this.getPoints()[3];
+    		double centerX = frontPoint.getX(), centerY = frontPoint.getY();
+    		double width = 1, length = 3;
+    		System.out.println("FRONT" + frontPoint);
     		
-    		this.lasers.add(objLaser);
+    		Point[] laserPoints = {new Point(centerX, centerY), 
+    				new Point(centerX+width, centerY), 
+    				new Point(centerX+width, centerY+length), 
+    				new Point(centerX, centerY+length)};
+
+    		System.out.println(new Point(centerX, centerY));
+    		if (Laser.laserCD == 0) {
+    			Laser objLaser = new Laser(laserPoints, new Point(centerX - width / 
+        				2, centerY), 
+        				this.rotation);
+        		this.lasers.add(objLaser);
+        		Laser.laserCD = 10;
+    		}
+    		Laser.laserCD--;
     	}
     	
        		

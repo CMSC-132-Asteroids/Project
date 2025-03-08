@@ -45,7 +45,6 @@ class AsteroidsGame extends Game {
 				new Point(this.width, this.height), new Point(0, this.height)};
 		Point offset = new Point(0,0);
 		double rotation = 0.0;
-		System.out.println(this.height);
 		this.background = new Background(backgroundPoints, offset, rotation);
 		
 	}
@@ -60,11 +59,12 @@ class AsteroidsGame extends Game {
 		 
 		 // calculate offset to place center of spaceship at center of screen
 		 int xCenter = this.width / 2 - length / 2, yCenter = this.height / 2 - 
-				 height / 2; 
+				 height / 2 ; 
 
 		 Point position = new Point(xCenter, yCenter); 
 		 double rotation = 180.0;
-		 this.spaceship = new Spaceship(spaceshipPoints, position, rotation);
+		 this.spaceship = new Spaceship(spaceshipPoints, position, rotation, 
+				 length, height);
 
 		 // give spaceship a way to track keys
 		this.addKeyListener(spaceship);
