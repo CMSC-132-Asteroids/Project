@@ -17,7 +17,7 @@ NOTE: You don't need to worry about the "magic math" details.
 
  */
 
-class Polygon implements Collidable {
+class Polygon implements Interactable {
 	private Point[] shape;   // An array of points.
 	public Point position;   // The offset mentioned above.
 	public double rotation; // Zero degrees is due east.
@@ -124,7 +124,7 @@ class Polygon implements Collidable {
     }
 	
 	@Override
-	public boolean collides(Collidable other) {
+	public boolean collides(Interactable other) {
 		// TODO Auto-generated method stub
 		return false;
 	}

@@ -1,6 +1,6 @@
 package game;
 
-public interface Collidable {
+public interface Interactable {
 
 	
 	
@@ -25,6 +25,6 @@ public interface Collidable {
 	
 	 */
 	
-	public boolean collides(Collidable other);
+	public boolean collides(Interactable other);
 	
 }

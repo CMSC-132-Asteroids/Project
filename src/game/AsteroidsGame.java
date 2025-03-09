@@ -23,8 +23,6 @@ class AsteroidsGame extends Game {
 	Spaceship spaceship;
 	Background background;
 	
-
-	
 	public AsteroidsGame() {
 		super("Asteroids!", 0, 0);
 		this.setFocusable(true);
