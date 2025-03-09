@@ -17,7 +17,7 @@ NOTE: You don't need to worry about the "magic math" details.
 
  */
 
-class Polygon implements Interactable {
+class Polygon {
 	private Point[] shape;   // An array of points.
 	public Point position;   // The offset mentioned above.
 	public double rotation; // Zero degrees is due east.
@@ -122,10 +122,4 @@ class Polygon implements Interactable {
     	// cdraw spaceship using x-coords and y-coords
     	brush.fillPolygon(xPoints, yPoints, numPoints);
     }
-	
-	@Override
-	public boolean collides(Interactable other) {
-		// TODO Auto-generated method stub
-		return false;
-	}
 }

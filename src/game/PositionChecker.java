@@ -1,8 +1,10 @@
 package game;
 
-public interface Interactable {
+import java.awt.Dimension;
+import java.awt.Toolkit;
 
-	
+@FunctionalInterface
+public interface PositionChecker {
 	
 	/*
 	1. isCollision(Collidable other) 
@@ -25,6 +27,14 @@ public interface Interactable {
 	
 	 */
 	
-	public boolean collides(Interactable other);
+	// object should pass itself
+	default public boolean isOffScreen(Polygon obj, Polygon background) {
+		Point[] points = obj.getPoints();
+		for (points)
+		
+	}
+	
+	// each object has its own functionality when going off screen
+	public void goOffScreen();
 	
 }

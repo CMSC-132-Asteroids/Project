@@ -21,7 +21,7 @@ class AsteroidsGame extends Game {
 	- current boss
 	 */
 	Spaceship spaceship;
-	Background background;
+	Polygon background; // may not be necessary...?
 	
 	public AsteroidsGame() {
 		super("Asteroids!", 0, 0);
@@ -43,7 +43,7 @@ class AsteroidsGame extends Game {
 				new Point(this.width, this.height), new Point(0, this.height)};
 		Point offset = new Point(0,0);
 		double rotation = 0.0;
-		this.background = new Background(backgroundPoints, offset, rotation);
+		this.background = new Polygon(backgroundPoints, offset, rotation);
 		
 	}
 	
@@ -79,6 +79,11 @@ class AsteroidsGame extends Game {
 		updateGame(brush);
 	}
 
+	/*
+	interactable interface will have access to screen size
+	each intereactlable poly gon has default method that they can use to check if offscreen
+	 */
+	
 	private void adjustSpaceshipPosition() {
 		Point[] spaceshipPoints = this.spaceship.getPoints();
 		for (Point p : spaceshipPoints) {

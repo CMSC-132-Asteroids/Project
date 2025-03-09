@@ -5,7 +5,7 @@ import java.awt.Graphics;
 import java.awt.event.*;
 import java.util.Arrays;
 import java.util.*;
-public class Spaceship extends Polygon implements KeyListener {
+public class Spaceship extends Polygon implements KeyListener, Interactable{
 
 	/*
 	1. constructor to create spaceship
@@ -91,7 +91,6 @@ public class Spaceship extends Polygon implements KeyListener {
 		this.lasers =  new ArrayList<Laser>();
 		this.length = length;
 		this.height = height;
-		System.out.println(length);
 
 	}
 
@@ -196,7 +195,6 @@ public class Spaceship extends Polygon implements KeyListener {
 	}
 	
 	public void wrapScreen(int width, int height) {
-
 		Point position = this.position;
 		double currX = position.getX();
 		double currY = position.getY();
@@ -212,6 +210,7 @@ public class Spaceship extends Polygon implements KeyListener {
 		} else if (currY > height) {
 			position.setY(currY - height);
 		}
+
 	}
 
 
@@ -229,6 +228,11 @@ public class Spaceship extends Polygon implements KeyListener {
 	}
 
 	public void keyTyped(KeyEvent e) {
+
+	}
+
+	@Override
+	public boolean checkScreenEdge() {
 
 	}
 
