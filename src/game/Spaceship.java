@@ -177,7 +177,7 @@ public class Spaceship extends Polygon implements KeyListener {
 		double laserOriginY = frontPoint.getY();
 		
 		// laser size
-		double width = 1, length = 3;
+		double width = 1.75, length = 5;
 
 		Point[] laserPoints = {new Point(laserOriginX, laserOriginY), 
 				new Point(laserOriginX + width, laserOriginY), 
