@@ -117,6 +117,7 @@ public class Spaceship extends Polygon implements KeyListener {
 		
 		for (int j = 0; j < this.lasers.size(); j++) {
 			Laser l = this.lasers.get(j);
+			boolean collided = false;
 			
 			for(int i = 0; i < asteroids.size(); i++) {
 				Asteroid a = asteroids.get(i);
@@ -125,6 +126,7 @@ public class Spaceship extends Polygon implements KeyListener {
 				if(a.collides(l)) {
 					a.destroy();
 					asteroids.remove(i);
+					collided = true;
 					i--;
 				}
 				
@@ -132,6 +134,7 @@ public class Spaceship extends Polygon implements KeyListener {
 			
 			Point[] laserPoint = l.getPoints();
 			boolean laserOut = false;
+			
 			
 			for(Point pl: laserPoint) {
 				if(!back.contains(pl)) {
@@ -144,7 +147,7 @@ public class Spaceship extends Polygon implements KeyListener {
 			l.move();
 			l.paint(brush);
 			
-			if(laserOut) {
+			if(laserOut || collided) {
 				this.lasers.remove(j);
 				j--;
 			}
