@@ -1,5 +1,6 @@
 package game;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.util.Random;
 
@@ -40,4 +41,24 @@ public class Asteroid extends Polygon {
 		this.position.setX(currX - changeX);
 		this.position.setY(currY - changeY);
 	}
+	
+	@Override
+    public void paint(Graphics brush) {
+    	
+    	// access Polygon's shape instance variable 
+    	Point[] spaceshipPoints = this.getPoints();
+    	
+    	// loop through Polygon instance variable for points   	
+    	int numPoints = spaceshipPoints.length;
+    	int[] xPoints = new int[numPoints], yPoints = new int[numPoints];
+    	
+    	// create two arrays for x-coords and y-coords
+    	for (int idx = 0; idx < numPoints; idx++) {
+    		xPoints[idx] = (int) spaceshipPoints[idx].getX();
+    		yPoints[idx] = (int) spaceshipPoints[idx].getY();
+    	}
+    	
+    	// draw spaceship using x-coords and y-coords
+    	brush.fillPolygon(xPoints, yPoints, numPoints);
+    }
 }

@@ -162,9 +162,8 @@ class AsteroidsGame extends Game {
 			// add random CD to timer
 			asteroidTimer += asteroidSpawnFactor * random.nextInt(50, 100);
 			if (asteroidSpawnFactor > 0.1) {
-				asteroidSpawnFactor *= .99;
+				asteroidSpawnFactor *= .995;
 			}
-			System.out.println(asteroidSpawnFactor);
 		}
 		asteroidTimer--;
 	}
@@ -191,13 +190,14 @@ class AsteroidsGame extends Game {
 		spaceship.wrapScreen(this.width, this.height);
 
 		// move and update all asteroids
-		brush.setColor(new Color(140, 120, 100));
+		brush.setColor(new Color(180, 160, 140));
 		updateAsteroids(brush);
 	}
 
 	private void updateAsteroids(Graphics brush) {
 		ArrayList<Asteroid> toRemove = new ArrayList<>();
 
+		
 		for (Asteroid a : this.asteroids) {
 			
 			// move asteroids and update on screen
