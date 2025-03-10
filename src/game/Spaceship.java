@@ -95,7 +95,7 @@ public class Spaceship extends Polygon implements KeyListener {
 
 	}
 
-	public void paint(Graphics brush) {
+	public void paint(Graphics brush, ArrayList<Asteroid> asteroids, Polygon back) {
 
 		// access Polygon's shape instance variable 
 		Point[] spaceshipPoints = this.getPoints();
@@ -112,12 +112,44 @@ public class Spaceship extends Polygon implements KeyListener {
 
 		// draw spaceship using x-coords and y-coords
 		brush.fillPolygon(xPoints, yPoints, numPoints);
-
+		
 		// move and update each laser on screen
-		for (Laser l : this.lasers) {
+		
+		for (int j = 0; j < this.lasers.size(); j++) {
+			Laser l = this.lasers.get(j);
+			
+			for(int i = 0; i < asteroids.size(); i++) {
+				Asteroid a = asteroids.get(i);
+				
+				//If an asteroid collides with the current laser
+				if(a.collides(l)) {
+					a.destroy();
+					asteroids.remove(i);
+					i--;
+				}
+				
+			}
+			
+			Point[] laserPoint = l.getPoints();
+			boolean laserOut = false;
+			
+			for(Point pl: laserPoint) {
+				if(!back.contains(pl)) {
+					laserOut = true;
+					break;
+				}
+			}
+			
+			
 			l.move();
 			l.paint(brush);
+			
+			if(laserOut) {
+				this.lasers.remove(j);
+				j--;
+			}
 		}
+		
 	}
 
 

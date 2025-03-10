@@ -137,4 +137,19 @@ class Polygon {
     	// cdraw spaceship using x-coords and y-coords
     	brush.fillPolygon(xPoints, yPoints, numPoints);
     }
+    
+    public boolean collides(Polygon other) {
+    	boolean result = false;
+    	Point[] otherPoints = other.getPoints();
+    	
+    	for(Point otherP: otherPoints) {
+    			if(this.contains(otherP)) {
+    				result = true;
+    				break;
+    			}
+    	}
+    	
+    	
+    	return result;
+    }
 }

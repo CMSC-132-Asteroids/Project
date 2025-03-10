@@ -4,6 +4,8 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.util.Random;
 
+import game.AsteroidsGame.PointHolder;
+
 
 public class Asteroid extends Polygon {
 	
@@ -22,7 +24,7 @@ public class Asteroid extends Polygon {
 	- method for asteroid to destroy itself on contact?
 	3. method for asteroid to move (and possibly spin)
 	 */
-	
+	private boolean display = true;
 	
     public Asteroid(Point[] points, Point offset, double rotation) {
         super(points, offset, rotation);
@@ -45,6 +47,8 @@ public class Asteroid extends Polygon {
 	@Override
     public void paint(Graphics brush) {
     	
+		if(!this.display) return;
+		
     	// access Polygon's shape instance variable 
     	Point[] spaceshipPoints = this.getPoints();
     	
@@ -61,4 +65,10 @@ public class Asteroid extends Polygon {
     	// draw spaceship using x-coords and y-coords
     	brush.fillPolygon(xPoints, yPoints, numPoints);
     }
+ 	
+	//Destroys the asteroid
+	public void destroy() {
+		PointHolder.points++;
+		this.display = false;
+	}
 }

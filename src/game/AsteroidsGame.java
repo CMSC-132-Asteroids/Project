@@ -14,10 +14,15 @@ import java.util.Arrays;
 import java.util.Random;
 
 class AsteroidsGame extends Game {
-	static int points = 0;
 	static int startTimer = 100;
 	static int asteroidTimer = 0;
 	static double asteroidSpawnFactor = 1;
+	
+	
+	//This is so we can pass the points by reference
+	public static class PointHolder {
+		public static int points = 0;
+	}
 
 	/*
 	instance variables to keep track of objects?
@@ -180,11 +185,15 @@ class AsteroidsGame extends Game {
 		// update background
 		brush.setColor(Color.black);
 		this.background.paint(brush);
+		
+		// update points
+		brush.setColor(Color.white);
+		brush.drawString("Points: " + PointHolder.points, 20, 20);
 
 		// move and update spaceship (includes lasers)
 		brush.setColor(Color.white);
 		this.spaceship.move();
-		this.spaceship.paint(brush);
+		this.spaceship.paint(brush, this.asteroids, this.background);
 
 		// adjustElementPositions();
 		spaceship.wrapScreen(this.width, this.height);
@@ -229,9 +238,7 @@ class AsteroidsGame extends Game {
 
 	public void paint(Graphics brush) {
 
-		// update points
-		brush.setColor(Color.white);
-		brush.drawString("Points: " + points, 20, 20);
+
 
 		// update game 
 		updateGame(brush);
