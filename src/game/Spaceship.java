@@ -5,7 +5,7 @@ import java.awt.Graphics;
 import java.awt.event.*;
 import java.util.Arrays;
 import java.util.*;
-public class Spaceship extends Polygon implements KeyListener, Interactable{
+public class Spaceship extends Polygon implements KeyListener {
 
 	/*
 	1. constructor to create spaceship
@@ -52,12 +52,12 @@ public class Spaceship extends Polygon implements KeyListener, Interactable{
 		}
 
 		public void paint(Graphics brush) { 
+			
+			// change laser's color to be red
 			brush.setColor(Color.red);
-
-
-			Point[] laserPoints = this.getPoints();
-
+			
 			// loop through Polygon instance variable for points   	
+			Point[] laserPoints = this.getPoints();
 			int numPoints = laserPoints.length;
 			int[] xPoints = new int[numPoints], yPoints = new int[numPoints];
 
@@ -69,17 +69,18 @@ public class Spaceship extends Polygon implements KeyListener, Interactable{
 
 			// cdraw spaceship using x-coords and y-coords
 			brush.fillPolygon(xPoints, yPoints, numPoints);
-
 		}
-
+		
 		public void move() {
+			
+			// calculate change in laser's coordinates using rotation and velocity
 			double changeX = laserVel * Math.cos(Math.toRadians(this.rotation - 90));
 			double changeY = laserVel * Math.sin(Math.toRadians(this.rotation - 90));
 
+			// change laser's position
 			double currX = this.position.getX(), currY = this.position.getY();
 			this.position.setX(currX - changeX);
 			this.position.setY(currY - changeY);
-
 		}
 	}
 
@@ -112,6 +113,7 @@ public class Spaceship extends Polygon implements KeyListener, Interactable{
 		// draw spaceship using x-coords and y-coords
 		brush.fillPolygon(xPoints, yPoints, numPoints);
 
+		// move and update each laser on screen
 		for (Laser l : this.lasers) {
 			l.move();
 			l.paint(brush);
@@ -139,6 +141,17 @@ public class Spaceship extends Polygon implements KeyListener, Interactable{
 			turnVelocity += 0.25;
 		}
 		
+		// shoot a laser
+		if (currKeys.contains(KeyEvent.VK_SPACE)) {
+			shootLaser();
+		}
+		
+		// always update position using new move and turn velocity
+		updatePosition();
+	}
+	
+	private void updatePosition() {
+		
 		// find current position and get x and y coords
 		Point currPos = this.position;
 		double currX = currPos.getX(), currY = currPos.getY();
@@ -148,18 +161,12 @@ public class Spaceship extends Polygon implements KeyListener, Interactable{
 				changeY = moveVelocity * Math.sin(Math.toRadians(this.rotation - 90));
 
 		// lower x/y coords are closer to top left 
-		// always update position (if move velocity == 0 -> ship won't move)
+		// update position (if move velocity == 0 -> ship won't move)
 		currPos.setX(currX - changeX);
 		currPos.setY(currY - changeY);
 		
-		// always update rotation (if turn velocity == 0 -> ship won't turn)
+		// update rotation (if turn velocity == 0 -> ship won't turn)
 		this.rotate((int) turnVelocity);
-
-		if (currKeys.contains(KeyEvent.VK_SPACE)) {
-			shootLaser();
-		}
-
-
 	}
 	
 	private void shootLaser() {
@@ -195,12 +202,13 @@ public class Spaceship extends Polygon implements KeyListener, Interactable{
 	}
 	
 	public void wrapScreen(int width, int height) {
+		
+		// find current position
 		Point position = this.position;
 		double currX = position.getX();
 		double currY = position.getY();
 
-
-		// check left of screen
+		// check all directions of screen adjust position accordingly
 		if (currX <= 0) {
 			position.setX(currX + width);
 		} else if (currX > width) {
@@ -210,31 +218,17 @@ public class Spaceship extends Polygon implements KeyListener, Interactable{
 		} else if (currY > height) {
 			position.setY(currY - height);
 		}
-
 	}
 
+	// add to set of pressed keys
+	public void keyPressed(KeyEvent e) {currKeys.add(e.getKeyCode());}
 
-	public void keyPressed(KeyEvent e) {
+	// remove from set of pressed keys
+	public void keyReleased(KeyEvent e) {currKeys.remove(e.getKeyCode());}
 
-		// add to set of pressed keys
-		currKeys.add(e.getKeyCode());
+	public void keyTyped(KeyEvent e) {}
 
-	}
 
-	public void keyReleased(KeyEvent e) {
-
-		// remove from set of pressed keys
-		currKeys.remove(e.getKeyCode());
-	}
-
-	public void keyTyped(KeyEvent e) {
-
-	}
-
-	@Override
-	public boolean checkScreenEdge() {
-
-	}
 
 
 

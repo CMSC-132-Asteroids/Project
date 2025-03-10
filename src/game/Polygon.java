@@ -1,6 +1,7 @@
 package game;
 
 import java.awt.Graphics;
+import java.util.Arrays;
 
 /*
 CLASS: Polygon
@@ -40,6 +41,19 @@ class Polygon {
 			p.y -= origin.y;
 		}
 	}
+	
+	@Override
+	public Polygon clone() {
+		return new Polygon(this.getPoints(), this.position.clone(), 
+				this.rotation);
+		
+	}
+	
+	@Override
+	public String toString() {
+		return Arrays.toString(this.getPoints());
+	}
+	
 
 	// "getPoints" applies the rotation and offset to the shape of the polygon.
 	public Point[] getPoints() {
@@ -54,6 +68,7 @@ class Polygon {
 			double y = ((p.x-center.x) * Math.sin(Math.toRadians(rotation)))
 					+ ((p.y-center.y) * Math.cos(Math.toRadians(rotation)))
 					+ center.y + position.y;
+			//System.out.println("Center: " + center + "\tPoint: " + p + "\tRotation: " + rotation);
 			points[i] = new Point(x,y);
 		}
 		return points;

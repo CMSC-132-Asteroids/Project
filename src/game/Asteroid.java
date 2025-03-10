@@ -1,6 +1,12 @@
 package game;
 
+import java.awt.Graphics;
+import java.util.Random;
+
+
 public class Asteroid extends Polygon {
+	
+	final static double baseVelocity = 5.0;
 	
 	/*
 	1. generate instance variables
@@ -18,6 +24,20 @@ public class Asteroid extends Polygon {
 	
 	
     public Asteroid(Point[] points, Point offset, double rotation) {
-        super (points, offset, rotation);
-    }    
+        super(points, offset, rotation);
+    }
+    
+
+	public void move() {
+
+		
+		// calculate change in laser's coordinates using rotation and velocity
+		double changeX = baseVelocity * Math.cos(Math.toRadians(this.rotation));
+		double changeY = baseVelocity * Math.sin(Math.toRadians(this.rotation));
+
+		// change laser's position
+		double currX = this.position.getX(), currY = this.position.getY();
+		this.position.setX(currX - changeX);
+		this.position.setY(currY - changeY);
+	}
 }
