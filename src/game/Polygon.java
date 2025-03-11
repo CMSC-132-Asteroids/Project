@@ -43,13 +43,6 @@ class Polygon {
 	}
 	
 	@Override
-	public Polygon clone() {
-		return new Polygon(this.getPoints(), this.position.clone(), 
-				this.rotation);
-		
-	}
-	
-	@Override
 	public String toString() {
 		return Arrays.toString(this.getPoints());
 	}

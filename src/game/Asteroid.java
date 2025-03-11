@@ -19,7 +19,7 @@ import game.AsteroidsGame.GameData;
 */
 public class Asteroid extends Polygon {
 	
-	final static double baseVelocity = 5.0;
+	private final static double baseVelocity = 5.0;
 	
     public Asteroid(Point[] points, Point offset, double rotation) {
         super(points, offset, rotation);
