@@ -21,6 +21,8 @@ class AsteroidsGame extends Game {
 	static int asteroidTimer = 0;
 	static double asteroidSpawnFactor = 1;
 	static boolean goldenAsteroid = false;
+	static boolean gameOver = false;
+	static int bossThreshold = 2500;
 	
 	
 	//This is so we can pass the points by reference
@@ -96,12 +98,43 @@ class AsteroidsGame extends Game {
 		int xCenter = this.width / 2 - length / 2, yCenter = this.height / 5 - 
 				height / 2 ; 
 
-		Point position = new Point(xCenter, yCenter); 
+		Point position = new Point(500, 500); 
 		
 		this.boss = new Boss(bossPoints, position, 0);
 		this.boss.setDisplay();
 	}
 
+	public void rotateBoss() {
+
+		// get spaceship's position
+		Point spaceshipPos = this.spaceship.position;
+		double spaceshipX = spaceshipPos.getX();
+		double spaceshipY = spaceshipPos.getY();
+
+		// calculate angle of asteroid based on spaceship and spawn position
+		//RotationCalculator topLeft = (())
+		double bossX = this.boss.position.getX();
+		double bossY = this.boss.position.getY();
+		double rotation = Math.toDegrees(Math.acos(Math.abs((bossX - spaceshipX)) 
+				/ (Math.sqrt(Math.pow(Math.abs(bossX - spaceshipX), 2) + 
+						Math.pow(spaceshipY, 2)))));
+		
+		// calculate different rotations based on spawn position
+		RotationCalculator bottomLeft = ((angle) -> (0));
+		RotationCalculator topLeft = ((angle) -> (0));
+		RotationCalculator bottomRight = ((angle) -> (0));
+		RotationCalculator r1 = ((angle) -> (-180 - angle));
+		
+		if (bossX > spaceshipX) {
+			rotation = (bossY < spaceshipY) ? r1.getRotation(rotation) : 
+				bottomLeft.getRotation(rotation);
+		} else {
+			rotation = (bossY < spaceshipY) ? bottomLeft.getRotation(rotation) : 
+				bottomRight.getRotation(rotation);
+		}
+		this.boss.setRotation(rotation);
+	}
+	
 	public void spawnAsteroid() {
 
 		// check CD for asteroid
@@ -254,6 +287,13 @@ class AsteroidsGame extends Game {
 		brush.setColor(Color.red);
 		brush.setFont(new Font("Helvetica", Font.PLAIN, 30));
 		
+		
+		if(this.spaceship.collides(this.boss) && !this.spaceship.getInv()) {
+			this.spaceship.takeHealth(1);
+			this.spaceship.setInv(true);
+		}
+		
+		
 		switch (this.spaceship.getHealth()) {
 			case 3:
 				brush.drawString("❤️❤️❤️", 20, this.height/20);
@@ -265,7 +305,8 @@ class AsteroidsGame extends Game {
 				brush.drawString("❤️", 20, this.height/20);
 				break;
 			default:
-				brush.drawString(":(", 20, this.height/20);
+				brush.drawString("", 20, this.height/20);
+				gameOver = true;
 				break;
 		}
 
@@ -276,7 +317,8 @@ class AsteroidsGame extends Game {
 		
 		//If the boss exists and is displayable do this
 		if(this.boss != null && this.boss.getDisplay()) {
-			this.boss.move();
+			rotateBoss();
+			//this.boss.move();
 			this.boss.paint(brush);
 			this.boss.wrapScreen(this.width, this.height);
 		}
@@ -324,10 +366,20 @@ class AsteroidsGame extends Game {
 
 	public void paint(Graphics brush) {
 
-
-
+		if (gameOver == true) {
+			endGame(brush);
+			return;
+		}
+		
 		// update game 
 		updateGame(brush);
+	}
+
+	private void endGame(Graphics brush) {
+		brush.setColor(Color.white);
+		brush.setFont(new Font("Impact", Font.PLAIN, 30));
+		brush.drawString("GAME OVER", this.width / 2 - 100, this.height / 2 - 100);
+		brush.drawString("SCORE: " + PointHolder.points, this.width / 2 + 50, this.height / 2);
 	}
 
 	public static void main(String[] args) {

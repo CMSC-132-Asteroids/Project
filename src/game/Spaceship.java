@@ -170,10 +170,6 @@ public class Spaceship extends Polygon implements KeyListener, Damagable {
 				
 			}
 		}
-
-		if(this.getHealth() <= 0) {
-			//Some end game here for now
-		}
 	}
 
 
@@ -275,6 +271,15 @@ public class Spaceship extends Polygon implements KeyListener, Damagable {
 			position.setY(currY - height);
 		}
 	}
+	
+	public boolean getInv() {
+		return this.invulnerable;
+	}
+	
+	public void setInv(boolean val) {
+		this.invulnerable = val;
+		this.invTicks = 100;
+	}
 
 	// add to set of pressed keys
 	public void keyPressed(KeyEvent e) {currKeys.add(e.getKeyCode());}
@@ -293,9 +298,4 @@ public class Spaceship extends Polygon implements KeyListener, Damagable {
 	public void takeHealth(int amt) {
 		this.health -= amt;
 	}
-
-
-
-
-
 }
