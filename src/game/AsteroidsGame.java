@@ -278,6 +278,7 @@ class AsteroidsGame extends Game {
 		if(this.boss != null && this.boss.getDisplay()) {
 			this.boss.move();
 			this.boss.paint(brush);
+			this.boss.wrapScreen(this.width, this.height);
 		}
 
 		// adjustElementPositions();

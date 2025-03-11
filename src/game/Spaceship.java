@@ -34,6 +34,8 @@ public class Spaceship extends Polygon implements KeyListener, Damagable {
 	private static double turnVelocity = 0;
 	int length, height;
 	private int health = 3;
+	private int invTicks = 0;
+	private boolean invulnerable = false;
 	private ArrayList<Laser> lasers;
 
 
@@ -89,6 +91,16 @@ public class Spaceship extends Polygon implements KeyListener, Damagable {
 	}
 
 	public void paint(Graphics brush, ArrayList<Asteroid> asteroids, Polygon back) {
+		
+		if(this.invulnerable) {
+			this.invTicks--;
+			
+			if(this.invTicks <= 0) {
+				this.invulnerable = false;
+			}
+		}
+		
+		if(this.invTicks % 2 != 0) return;
 
 		// access Polygon's shape instance variable 
 		Point[] spaceshipPoints = this.getPoints();
@@ -140,10 +152,27 @@ public class Spaceship extends Polygon implements KeyListener, Damagable {
 				
 			l.move();
 			l.paint(brush);
+			
+			//If the laser is out of screen or has collided remove
 			if (laserOut || collided) {
 				this.lasers.remove(i);
 				i--;
 			}
+		}
+		
+		//check if asteroid collided with spaceship
+		for(Asteroid cAsteroid: asteroids) {
+			if(cAsteroid.collides(this)) {
+				if(this.invulnerable) return;
+				this.takeHealth(1);
+				this.invulnerable = true;
+				this.invTicks = 100;
+				
+			}
+		}
+
+		if(this.getHealth() <= 0) {
+			//Some end game here for now
 		}
 	}
 

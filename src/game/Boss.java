@@ -82,6 +82,25 @@ public class Boss extends Polygon implements Damagable {
     	
     	return false;
     }
+    
+    public void wrapScreen(int width, int height) {
+		
+		// find current position
+		Point position = this.position;
+		double currX = position.getX();
+		double currY = position.getY();
+
+		// check all directions of screen adjust position accordingly
+		if (currX <= 0) {
+			position.setX(currX + width);
+		} else if (currX > width) {
+			position.setX(currX - width);
+		} else if (currY <= 0) {
+			position.setY(currY + height);
+		} else if (currY > height) {
+			position.setY(currY - height);
+		}
+	}
 
 	@Override
 	public int getHealth() {
