@@ -4,7 +4,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.util.Random;
 
-import game.AsteroidsGame.PointHolder;
+import game.AsteroidsGame.GameData;
 
 
 public class Asteroid extends Polygon {
@@ -65,6 +65,6 @@ public class Asteroid extends Polygon {
  	
 	//Destroys the asteroid
 	public void destroy() {
-		PointHolder.points += 100;
+		GameData.points += 100;
 	}
 }

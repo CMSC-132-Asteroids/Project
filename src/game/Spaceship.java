@@ -229,7 +229,7 @@ public class Spaceship extends Polygon implements KeyListener, Damagable {
 		double laserOriginY = frontPoint.getY();
 		
 		// laser size
-		double width = 1.75, length = 5;
+		double width = 1.75, length = 20;
 
 		Point[] laserPoints = {new Point(laserOriginX, laserOriginY), 
 				new Point(laserOriginX + width, laserOriginY), 

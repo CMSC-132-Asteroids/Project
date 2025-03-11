@@ -14,20 +14,17 @@ import java.util.Arrays;
 import java.util.Random;
 
 import game.Point;
-import game.AsteroidsGame.PointHolder;
 
 class AsteroidsGame extends Game {
-	static int startTimer = 100;
-	static int asteroidTimer = 0;
-	static double asteroidSpawnFactor = 1;
-	static boolean goldenAsteroid = false;
-	static boolean gameOver = false;
-	static int bossThreshold = 2500;
-	
-	
 	//This is so we can pass the points by reference
-	public static class PointHolder {
+	public static class GameData {
 		public static int points = 0;
+		public static int startTimer = 100;
+		public static int asteroidTimer = 0;
+		public static double asteroidSpawnFactor = 1;
+		public static boolean goldenAsteroid = false;
+		public static boolean gameOver = false;
+		public static int bossThreshold = 2500;
 	}
 
 	/*
@@ -138,7 +135,7 @@ class AsteroidsGame extends Game {
 	public void spawnAsteroid() {
 
 		// check CD for asteroid
-		if (asteroidTimer == 0) {
+		if (GameData.asteroidTimer == 0) {
 			
 			// randomize 
 			Random random = new Random();
@@ -191,9 +188,9 @@ class AsteroidsGame extends Game {
 			}
 
 			// add new asteroid to list of asteroids 
-			if (goldenAsteroid == false && PointHolder.points >= 1000) {
+			if (GameData.goldenAsteroid == false && GameData.points >= 1000) {
 
-				goldenAsteroid = true;
+				GameData.goldenAsteroid = true;
 				scale = 20;
 				numPoints = random.nextInt(5, 12) * 2;
 				asteroidPoints = new Point[numPoints];
@@ -247,7 +244,7 @@ class AsteroidsGame extends Game {
 				    }
 					
 					public void destroy() {
-						PointHolder.points += 1000;
+						GameData.points += 1000;
 
 					}
 				});
@@ -257,20 +254,20 @@ class AsteroidsGame extends Game {
 
 			
 			// add random CD to timer
-			asteroidTimer += asteroidSpawnFactor * random.nextInt(50, 100);
-			if (asteroidSpawnFactor > 0.1) {
-				asteroidSpawnFactor *= .995;
+			GameData.asteroidTimer += GameData.asteroidSpawnFactor * random.nextInt(50, 100);
+			if (GameData.asteroidSpawnFactor > 0.1) {
+				GameData.asteroidSpawnFactor *= .995;
 			}
 		}
-		asteroidTimer--;
+		GameData.asteroidTimer--;
 	}
 	
 	
 	public void updateGame(Graphics brush) {
 
 		// decrement time until first asteroid spawn
-		if (startTimer > 0) {
-			startTimer--;
+		if (GameData.startTimer > 0) {
+			GameData.startTimer--;
 		} else {
 			spawnAsteroid();
 		}
@@ -282,7 +279,7 @@ class AsteroidsGame extends Game {
 		// update points
 		brush.setColor(Color.white);
 		brush.setFont(new Font("Impact", Font.PLAIN, 30));
-		brush.drawString("Points: " + PointHolder.points, 20, this.height - 90);
+		brush.drawString("Points: " + GameData.points, 20, this.height - 90);
 		
 		brush.setColor(Color.red);
 		brush.setFont(new Font("Helvetica", Font.PLAIN, 30));
@@ -306,7 +303,7 @@ class AsteroidsGame extends Game {
 				break;
 			default:
 				brush.drawString("", 20, this.height/20);
-				gameOver = true;
+				GameData.gameOver = true;
 				break;
 		}
 
@@ -366,7 +363,7 @@ class AsteroidsGame extends Game {
 
 	public void paint(Graphics brush) {
 
-		if (gameOver == true) {
+		if (GameData.gameOver == true) {
 			endGame(brush);
 			return;
 		}
@@ -379,7 +376,7 @@ class AsteroidsGame extends Game {
 		brush.setColor(Color.white);
 		brush.setFont(new Font("Impact", Font.PLAIN, 30));
 		brush.drawString("GAME OVER", this.width / 2 - 100, this.height / 2 - 100);
-		brush.drawString("SCORE: " + PointHolder.points, this.width / 2 + 50, this.height / 2);
+		brush.drawString("SCORE: " + GameData.points, this.width / 2 + 50, this.height / 2);
 	}
 
 	public static void main(String[] args) {
