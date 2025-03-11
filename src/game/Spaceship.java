@@ -26,15 +26,41 @@ public class Spaceship extends Polygon implements KeyListener, Damagable {
 	private boolean invulnerable = false;
 	private ArrayList<Laser> lasers;
 
-
+	
+	/**
+	* Laser is an inner class of Spaceship.
+	* This class is used to initialize new laser objects.
+	* 
+	* 
+	* @author Declan Amoako
+	* @author Allen Bai
+	* 
+	*/
 	private class Laser extends Polygon {
 		static double laserVel = 10.0;
 		static double laserCD = 0;
-
+		
+		/**
+		* The constructor for Laser.
+		* 
+		* 
+		* @author Declan Amoako
+		* @author Allen Bai
+		* 
+		*/
 		public Laser(Point[] points, Point offset, double rotation) {
 			super(points, offset, rotation);
 		}
-
+		
+		/**
+		* The paint method for Laser.
+		* It handles how a laser is drawn to the screen.
+		* 
+		* 
+		* @author Declan Amoako
+		* @author Allen Bai
+		* 
+		*/
 		public void paint(Graphics brush) { 
 			
 			// change laser's color to be red
@@ -55,6 +81,16 @@ public class Spaceship extends Polygon implements KeyListener, Damagable {
 			brush.fillPolygon(xPoints, yPoints, numPoints);
 		}
 		
+		/**
+		* The move method for Laser.
+		* Lasers move in one direction once shot
+		* This direction is determined using the rotation of the laser.
+		* The rotation of the laser is set to the current rotation of the spaceship upon shooting.
+		* 
+		* @author Declan Amoako
+		* @author Allen Bai
+		* 
+		*/
 		public void move() {
 			
 			// calculate change in laser's coordinates using rotation and velocity
@@ -68,7 +104,14 @@ public class Spaceship extends Polygon implements KeyListener, Damagable {
 		}
 	}
 
-	// may add more parameters
+	/**
+	* The constructor for the Spaceship.
+	* 
+	* 
+	* @author Declan Amoako
+	* @author Allen Bai
+	* 
+	*/
 	public Spaceship(Point[] points, Point offset, double rotation, int length, 
 			int height) {
 		super (points, offset, rotation);
