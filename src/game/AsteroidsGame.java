@@ -13,10 +13,14 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
 
+import game.Point;
+import game.AsteroidsGame.PointHolder;
+
 class AsteroidsGame extends Game {
 	static int startTimer = 100;
 	static int asteroidTimer = 0;
 	static double asteroidSpawnFactor = 1;
+	static boolean goldenAsteroid = false;
 	
 	
 	//This is so we can pass the points by reference
@@ -109,7 +113,7 @@ class AsteroidsGame extends Game {
 			// randomize 
 			Random random = new Random();
 			int numPoints = random.nextInt(3,7);
-			int scale = random.nextInt(25, 75); //random.nextDouble(1, 3);
+			int scale = random.nextInt(25, 75); 
 			Point[] asteroidPoints = new Point[numPoints];
 			int spawnLocation = random.nextInt(0, 2);
 			int spawnX, spawnY; 
@@ -121,35 +125,28 @@ class AsteroidsGame extends Game {
 			double spaceshipY = spaceshipPos.getY();
 
 			// calculate angle of asteroid based on spaceship and spawn position
-			switch (spawnLocation) {
-			case 0: 
-				spawnX = random.nextInt(-scale, this.width + scale);
-				spawnY = -scale;
-				if (spawnX > spaceshipX) {
-					rotation = - Math.toDegrees(Math.acos((spawnX - spaceshipX) / 
-							(Math.sqrt(Math.pow(spawnX - spaceshipX, 2) + 
-									Math.pow(spaceshipY, 2)))));
-				} else {
-					rotation = 180 + Math.toDegrees(Math.acos((spaceshipX - spawnX) / 
-							(Math.sqrt(Math.pow(spaceshipX - spawnX, 2) + 
-									Math.pow(spaceshipY, 2)))));
-				}
-				break;
-			default:
-				spawnX = random.nextInt(-scale, this.width + scale);
-				spawnY = this.height - scale * 2;
-				if (spawnX > spaceshipX) {
-					rotation = Math.toDegrees(Math.acos((spawnX - spaceshipX) / 
-							(Math.sqrt(Math.pow(spawnX - spaceshipX, 2) + 
-									Math.pow(spaceshipY, 2)))));
-				} else {
-					rotation = 180 - Math.toDegrees(Math.acos((spaceshipX - spawnX) / 
-							(Math.sqrt(Math.pow(spaceshipX - spawnX, 2) + 
-									Math.pow(spaceshipY, 2)))));
-				}
-				break;
+			//RotationCalculator topLeft = (())
+			spawnX = random.nextInt(-scale, this.width + scale);
+			spawnY = (spawnLocation == 0) ? -scale : this.height - scale * 2;
+			rotation = Math.toDegrees(Math.acos(Math.abs((spawnX - spaceshipX)) 
+					/ (Math.sqrt(Math.pow(Math.abs(spawnX - spaceshipX), 2) + 
+							Math.pow(spaceshipY, 2)))));
+			
+			// calculate different rotations based on spawn position
+			RotationCalculator topRight = ((angle) -> (-angle));
+			RotationCalculator topLeft = ((angle) -> (180 + angle));
+			RotationCalculator bottomRight = ((angle) -> (angle));
+			RotationCalculator bottomLeft = ((angle) -> (180 - angle));
+			
+			if (spawnX > spaceshipX) {
+				rotation = (spawnY < 0) ? topRight.getRotation(rotation) : 
+					bottomRight.getRotation(rotation);
+			} else {
+				rotation = (spawnY < 0) ? topLeft.getRotation(rotation) : 
+					bottomLeft.getRotation(rotation);
 			}
 			
+
 			// create new point to use as offset
 			Point spawnPoint = new Point(spawnX, spawnY);
 
@@ -162,7 +159,40 @@ class AsteroidsGame extends Game {
 			}
 			
 			// add new asteroid to list of asteroids 
-			this.asteroids.add(new Asteroid(asteroidPoints, spawnPoint, rotation));
+			if (goldenAsteroid == false && PointHolder.points > 500) {
+				this.asteroids.add(new Asteroid(asteroidPoints, spawnPoint, rotation) {
+					
+					@Override
+					public void paint(Graphics brush) {
+						brush.setColor(Color.yellow);
+
+				    	// access Polygon's shape instance variable 
+				    	Point[] spaceshipPoints = this.getPoints();
+				    	
+				    	// loop through Polygon instance variable for points   	
+				    	int numPoints = spaceshipPoints.length;
+				    	int[] xPoints = new int[numPoints], yPoints = new int[numPoints];
+				    	
+				    	// create two arrays for x-coords and y-coords
+				    	for (int idx = 0; idx < numPoints; idx++) {
+				    		xPoints[idx] = (int) spaceshipPoints[idx].getX();
+				    		yPoints[idx] = (int) spaceshipPoints[idx].getY();
+				    	}
+				    	
+				    	// draw spaceship using x-coords and y-coords
+				    	brush.fillPolygon(xPoints, yPoints, numPoints);
+						brush.setColor(new Color(180, 160, 140));
+				    }
+					
+					public void destroy() {
+						PointHolder.points += 1000;
+						goldenAsteroid = true;
+					}
+				});
+			} else {
+				this.asteroids.add(new Asteroid(asteroidPoints, spawnPoint, rotation));
+			}
+
 			
 			// add random CD to timer
 			asteroidTimer += asteroidSpawnFactor * random.nextInt(50, 100);
@@ -172,6 +202,7 @@ class AsteroidsGame extends Game {
 		}
 		asteroidTimer--;
 	}
+	
 	
 	public void updateGame(Graphics brush) {
 
@@ -188,7 +219,7 @@ class AsteroidsGame extends Game {
 		
 		// update points
 		brush.setColor(Color.white);
-		brush.drawString("Points: " + PointHolder.points, 20, 20);
+		brush.drawString("Points: " + PointHolder.points, 20, this.height - 90);
 
 		// move and update spaceship (includes lasers)
 		brush.setColor(Color.white);
@@ -199,7 +230,6 @@ class AsteroidsGame extends Game {
 		spaceship.wrapScreen(this.width, this.height);
 
 		// move and update all asteroids
-		brush.setColor(new Color(180, 160, 140));
 		updateAsteroids(brush);
 	}
 
@@ -210,6 +240,7 @@ class AsteroidsGame extends Game {
 		for (Asteroid a : this.asteroids) {
 			
 			// move asteroids and update on screen
+			brush.setColor(new Color(180, 160, 140));
 			a.paint(brush);
 			a.move();
 			

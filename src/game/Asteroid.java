@@ -24,7 +24,6 @@ public class Asteroid extends Polygon {
 	- method for asteroid to destroy itself on contact?
 	3. method for asteroid to move (and possibly spin)
 	 */
-	private boolean display = true;
 	
     public Asteroid(Point[] points, Point offset, double rotation) {
         super(points, offset, rotation);
@@ -46,8 +45,6 @@ public class Asteroid extends Polygon {
 	
 	@Override
     public void paint(Graphics brush) {
-    	
-		if(!this.display) return;
 		
     	// access Polygon's shape instance variable 
     	Point[] spaceshipPoints = this.getPoints();
@@ -68,7 +65,6 @@ public class Asteroid extends Polygon {
  	
 	//Destroys the asteroid
 	public void destroy() {
-		PointHolder.points++;
-		this.display = false;
+		PointHolder.points += 100;
 	}
 }

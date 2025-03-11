@@ -114,45 +114,44 @@ public class Spaceship extends Polygon implements KeyListener {
 		brush.fillPolygon(xPoints, yPoints, numPoints);
 		
 		// move and update each laser on screen
-		
-		for (int j = 0; j < this.lasers.size(); j++) {
-			Laser l = this.lasers.get(j);
+		for (int i = 0; i < this.lasers.size(); i++) {
+			
+			// get each laser
+			Laser l = this.lasers.get(i);
 			boolean collided = false;
 			
-			for(int i = 0; i < asteroids.size(); i++) {
-				Asteroid a = asteroids.get(i);
+			// loop through all asteroids
+			for (int j = 0; j < asteroids.size(); j++) {
+				Asteroid a = asteroids.get(j);
 				
-				//If an asteroid collides with the current laser
-				if(a.collides(l)) {
+				// check if any asteroids collide with laser
+				if (a.collides(l)) {
+					
+					// destroy asteroids and re
 					a.destroy();
-					asteroids.remove(i);
+					asteroids.remove(j);
 					collided = true;
-					i--;
+					j--;
 				}
 				
 			}
 			
 			Point[] laserPoint = l.getPoints();
 			boolean laserOut = false;
-			
-			
-			for(Point pl: laserPoint) {
-				if(!back.contains(pl)) {
+			for(Point p: laserPoint) {
+				if(!back.contains(p)) {
 					laserOut = true;
 					break;
 				}
 			}
-			
-			
+				
 			l.move();
 			l.paint(brush);
-			
-			if(laserOut || collided) {
-				this.lasers.remove(j);
-				j--;
+			if (laserOut || collided) {
+				this.lasers.remove(i);
+				i--;
 			}
 		}
-		
 	}
 
 
