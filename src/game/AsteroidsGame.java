@@ -356,7 +356,7 @@ class AsteroidsGame extends Game {
 		brush.setFont(new Font("Helvetica", Font.PLAIN, 30));
 		
 		
-		if(this.spaceship.collides(this.boss) && !this.spaceship.getInv()) {
+		if(this.spaceship.collides(this.boss) && !this.spaceship.getInv() && this.boss.getDisplay()) {
 			this.spaceship.takeHealth(1);
 			this.spaceship.setInv(true);
 		}
