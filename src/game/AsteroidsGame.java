@@ -120,8 +120,7 @@ class AsteroidsGame extends Game {
 
 		Point position = new Point(xCenter, yCenter); 
 		double rotation = 180.0;
-		this.spaceship = new Spaceship(spaceshipPoints, position, rotation, 
-				length, height);
+		this.spaceship = new Spaceship(spaceshipPoints, position, rotation);
 
 		// give spaceship a way to track keys
 		this.addKeyListener(spaceship);
@@ -380,7 +379,7 @@ class AsteroidsGame extends Game {
 
 		// move and update spaceship (includes lasers)
 		brush.setColor(Color.white);
-		this.spaceship.move();
+		this.spaceship.takeInput();
 		this.spaceship.paint(brush, this.asteroids, this.background);
 		
 		

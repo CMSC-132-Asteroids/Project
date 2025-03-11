@@ -20,7 +20,6 @@ public class Spaceship extends Polygon implements KeyListener, Damagable {
 	private final static Set<Integer> currKeys = new HashSet<Integer>();
 	private static double moveVelocity = 0;
 	private static double turnVelocity = 0;
-	int length, height;
 	private int health = 3;
 	private int invTicks = 0;
 	private boolean invulnerable = false;
@@ -112,12 +111,9 @@ public class Spaceship extends Polygon implements KeyListener, Damagable {
 	* @author Allen Bai
 	* 
 	*/
-	public Spaceship(Point[] points, Point offset, double rotation, int length, 
-			int height) {
+	public Spaceship(Point[] points, Point offset, double rotation) {
 		super (points, offset, rotation);
 		this.lasers =  new ArrayList<Laser>();
-		this.length = length;
-		this.height = height;
 
 	}
 
@@ -131,7 +127,7 @@ public class Spaceship extends Polygon implements KeyListener, Damagable {
 			}
 		}
 		
-		if(this.invTicks % 10 != 0 && this.invulnerable) return;
+		if (this.invTicks % 10 != 0 && this.invulnerable) return;
 
 		// access Polygon's shape instance variable 
 		Point[] spaceshipPoints = this.getPoints();
@@ -204,7 +200,7 @@ public class Spaceship extends Polygon implements KeyListener, Damagable {
 	}
 
 
-	public void move() {
+	public void takeInput() {
 		
 		// dampen move and turn velocity (multiply until 0 each frame)
 		moveVelocity *= 0.95;
@@ -230,10 +226,10 @@ public class Spaceship extends Polygon implements KeyListener, Damagable {
 		}
 		
 		// always update position using new move and turn velocity
-		updatePosition();
+		move();
 	}
 	
-	private void updatePosition() {
+	private void move() {
 		
 		// find current position and get x and y coords
 		Point currPos = this.position;
