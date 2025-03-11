@@ -2,5 +2,5 @@ package game;
 
 public interface Damagable {
 	int getHealth();
-	int takeHealth(int amt);
+	void takeHealth(int amt);
 }

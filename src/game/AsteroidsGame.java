@@ -35,6 +35,7 @@ class AsteroidsGame extends Game {
 	- current boss
 	 */
 	private Spaceship spaceship;
+	private Boss boss;
 	private Polygon background; // may not be necessary...?
 	private ArrayList<Asteroid> asteroids = new ArrayList<>();
 
@@ -48,6 +49,9 @@ class AsteroidsGame extends Game {
 
 		// create spaceship, track keystrokes for movement
 		initializeSpaceship();
+		
+		//Creates the boss but does not display the boss
+		initializeBoss();
 
 	}
 
@@ -80,6 +84,22 @@ class AsteroidsGame extends Game {
 
 		// give spaceship a way to track keys
 		this.addKeyListener(spaceship);
+	}
+	
+	public void initializeBoss() {
+		int length = 30;
+		int height = (int) (Math.sqrt(3) / 2 * length);
+		Point[] bossPoints = {new Point(0, 0), new Point(length / 2, 
+				height / 5), new Point(length, 0), new Point(length / 2, height)};
+
+		// calculate offset to place center of spaceship at center of screen
+		int xCenter = this.width / 2 - length / 2, yCenter = this.height / 5 - 
+				height / 2 ; 
+
+		Point position = new Point(xCenter, yCenter); 
+		
+		this.boss = new Boss(bossPoints, position, 0);
+		this.boss.setDisplay();
 	}
 
 	public void spawnAsteroid() {
@@ -228,12 +248,19 @@ class AsteroidsGame extends Game {
 		
 		// update points
 		brush.setColor(Color.white);
+		brush.setFont(new Font("Impact", Font.PLAIN, 30));
 		brush.drawString("Points: " + PointHolder.points, 20, this.height - 90);
 
 		// move and update spaceship (includes lasers)
 		brush.setColor(Color.white);
 		this.spaceship.move();
 		this.spaceship.paint(brush, this.asteroids, this.background);
+		
+		//If the boss exists and is displayable do this
+		if(this.boss != null && this.boss.getDisplay()) {
+			this.boss.move();
+			this.boss.paint(brush);
+		}
 
 		// adjustElementPositions();
 		spaceship.wrapScreen(this.width, this.height);
