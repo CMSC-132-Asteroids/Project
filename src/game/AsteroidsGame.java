@@ -36,7 +36,7 @@ class AsteroidsGame extends Game {
 		public static double asteroidSpawnFactor = 1;
 		public static boolean goldenAsteroid = false;
 		public static boolean gameOver = false;
-		public static int bossThreshold = 2500;
+		public static int bossThreshold = 100;
 	}
 
 	private Spaceship spaceship;
@@ -383,9 +383,16 @@ class AsteroidsGame extends Game {
 		this.spaceship.move();
 		this.spaceship.paint(brush, this.asteroids, this.background);
 		
+		
+		//If ThresHold reached
+		if(GameData.points == GameData.bossThreshold && !this.boss.getDisplay()) {
+			this.boss.setDisplay();
+			GameData.bossThreshold *= 2;
+		}
+		
 		//If the boss exists and is displayable do this
 		if(this.boss != null && this.boss.getDisplay()) {
-			rotateBoss();
+			//rotateBoss();
 			this.boss.move();
 			this.boss.paint(brush);
 			this.boss.wrapScreen(this.width, this.height);
