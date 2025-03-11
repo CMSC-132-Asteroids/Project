@@ -100,7 +100,7 @@ public class Spaceship extends Polygon implements KeyListener, Damagable {
 			}
 		}
 		
-		if(this.invTicks % 2 != 0) return;
+		if(this.invTicks % 10 != 0 && this.invulnerable) return;
 
 		// access Polygon's shape instance variable 
 		Point[] spaceshipPoints = this.getPoints();
