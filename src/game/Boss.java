@@ -51,7 +51,7 @@ public class Boss extends Polygon implements Damagable {
     		this.currentMov = this.determineMovement();
     	}
     	
-    	
+    	// 
     	double currX = this.position.getX();
     	
     	double changeX = Math.floor(Math.random() * 10);

@@ -158,7 +158,7 @@ class AsteroidsGame extends Game {
 			}
 
 			// add new asteroid to list of asteroids 
-			if (goldenAsteroid == false && PointHolder.points >= 0) {
+			if (goldenAsteroid == false && PointHolder.points >= 1000) {
 
 				goldenAsteroid = true;
 				scale = 20;
