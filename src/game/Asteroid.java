@@ -7,23 +7,19 @@ import java.util.Random;
 import game.AsteroidsGame.GameData;
 
 
+
+
+/**
+* Asteroid is a class that holds most of the logic needed to display an asteroid.
+* 
+* 
+* @author Declan Amoako
+* @author Allen Bai
+* 
+*/
 public class Asteroid extends Polygon {
 	
 	final static double baseVelocity = 5.0;
-	
-	/*
-	1. generate instance variables
-	- generate shape method (start off with circle > may generate random points) 
-	- generate original position/offset (at edge of screen > offscreen if time?)
-	- rotation should face toward center of screen and move toward player
-	- (two rotation variable to keep real rotation and another to rotate graphically while it moves?)
-	2. collidable interface methods
-	- collides with boss
-	- collides with lasers
-	- collides with other asteroids
-	- method for asteroid to destroy itself on contact?
-	3. method for asteroid to move (and possibly spin)
-	 */
 	
     public Asteroid(Point[] points, Point offset, double rotation) {
         super(points, offset, rotation);

@@ -5,15 +5,8 @@ import java.awt.Graphics;
 
 public class Boss extends Polygon implements Damagable {
 
-	// default constructor > may add more attributes later
-	/*
-	level? > determines HP/speed/attributes of boss
 	
-	(if time at end? > random object > enum class to hold different boss shapes 
-	that correlate to different numbers) 
-	 */
-	
-	//Starts off as false since you dont want the boss displayed yet
+	//internal use
 	private boolean display = false;
 	private boolean currentMov = false;
 	private int ticks = 0;

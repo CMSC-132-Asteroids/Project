@@ -15,8 +15,20 @@ import java.util.Random;
 
 import game.Point;
 
+
+/**
+* AsteroidsGame is the class that holds the main game event loop.
+* It holds all the objects in the game, and decides their behavior.
+* It extends the Abstract class which provides us all the functionality needed to display a window.
+* 
+* 
+* @author Declan Amoako
+* @author Allen Bai
+* 
+*/
 class AsteroidsGame extends Game {
-	//This is so we can pass the points by reference
+	
+	//Inner class used to keep track of all Game Data
 	public static class GameData {
 		public static int points = 0;
 		public static int startTimer = 100;
@@ -27,17 +39,25 @@ class AsteroidsGame extends Game {
 		public static int bossThreshold = 2500;
 	}
 
-	/*
-	instance variables to keep track of objects?
-	- spaceship
-	- arraylist of asteroids (may contain golden asteroid)
-	- current boss
-	 */
 	private Spaceship spaceship;
 	private Boss boss;
-	private Polygon background; // may not be necessary...?
+	private Polygon background;
 	private ArrayList<Asteroid> asteroids = new ArrayList<>();
 
+	
+	/**
+	* Default constructor for AsteroidGame
+	* It initializes all the main game objects.
+	* These objects are:
+	* background
+	* spaceship
+	* Boss
+	* 
+	* 
+	* @author Declan Amoako
+	* @author Allen Bai
+	* 
+	*/
 	public AsteroidsGame() {
 		super("Asteroids!", 0, 0);
 		this.setFocusable(true);
@@ -53,7 +73,17 @@ class AsteroidsGame extends Game {
 		initializeBoss();
 
 	}
-
+	
+	/**
+	* Initializes the background.
+	* The background is used to determine when an object is off screen.
+	* It essentially represents the screen.
+	* 
+	* 
+	* @author Declan Amoako
+	* @author Allen Bai
+	* 
+	*/
 	public void initializeBackground() {
 
 		// create rectangle background
@@ -63,7 +93,19 @@ class AsteroidsGame extends Game {
 		double rotation = 0.0;
 		this.background = new Polygon(backgroundPoints, offset, rotation);
 	}
-
+	
+	
+	/**
+	* Initializes the Spaceship.
+	* The Spaceship represents the player.
+	* The player can move using WASD or the arrow keys.
+	* The player can shoot using SPACEBAR.
+	* 
+	* 
+	* @author Declan Amoako
+	* @author Allen Bai
+	* 
+	*/
 	public void initializeSpaceship() {
 
 		// create equalateral triangle
@@ -85,6 +127,16 @@ class AsteroidsGame extends Game {
 		this.addKeyListener(spaceship);
 	}
 	
+	/**
+	* Initializes the Boss.
+	* The Boss is the hardest objective for the game that only occurs at certain points.
+	* The Boss's only role is to make the game difficult for the player.
+	* 
+	* 
+	* @author Declan Amoako
+	* @author Allen Bai
+	* 
+	*/
 	public void initializeBoss() {
 		int length = 30;
 		int height = (int) (Math.sqrt(3) / 2 * length);
@@ -95,12 +147,11 @@ class AsteroidsGame extends Game {
 		int xCenter = this.width / 2 - length / 2, yCenter = this.height / 5 - 
 				height / 2 ; 
 
-		Point position = new Point(500, 500); 
+		Point position = new Point(xCenter, yCenter); 
 		
 		this.boss = new Boss(bossPoints, position, 0);
-		this.boss.setDisplay();
 	}
-
+	
 	public void rotateBoss() {
 
 		// get spaceship's position
@@ -132,6 +183,16 @@ class AsteroidsGame extends Game {
 		this.boss.setRotation(rotation);
 	}
 	
+	
+	/**
+	* Handles the spawn system for the asteroid.
+	* 
+	* 
+	* 
+	* @author Declan Amoako
+	* @author Allen Bai
+	* 
+	*/
 	public void spawnAsteroid() {
 
 		// check CD for asteroid
@@ -263,6 +324,16 @@ class AsteroidsGame extends Game {
 	}
 	
 	
+	/**
+	* This is the main game loop.
+	* The main game loop updates the needed variables.
+	* It also calls the move and paint methods of the game objects.
+	* 
+	* 
+	* @author Declan Amoako
+	* @author Allen Bai
+	* 
+	*/
 	public void updateGame(Graphics brush) {
 
 		// decrement time until first asteroid spawn
@@ -315,7 +386,7 @@ class AsteroidsGame extends Game {
 		//If the boss exists and is displayable do this
 		if(this.boss != null && this.boss.getDisplay()) {
 			rotateBoss();
-			//this.boss.move();
+			this.boss.move();
 			this.boss.paint(brush);
 			this.boss.wrapScreen(this.width, this.height);
 		}
@@ -326,7 +397,16 @@ class AsteroidsGame extends Game {
 		// move and update all asteroids
 		updateAsteroids(brush);
 	}
-
+	
+	/**
+	* Private method used to update the asteroids currently in the game.
+	* If an asteroid is off the screen this method handles removing it
+	* If an asteroid is on the screen this methods handles moving and painting it.
+	* 
+	* @author Declan Amoako
+	* @author Allen Bai
+	* 
+	*/
 	private void updateAsteroids(Graphics brush) {
 		ArrayList<Asteroid> toRemove = new ArrayList<>();
 
@@ -352,6 +432,15 @@ class AsteroidsGame extends Game {
 		}
 	}
 
+	/**
+	* Method used to check if an asteroid is on the screen or not.
+	* It does this by checking if the background contains the asteroid.
+	* 
+	* 
+	* @author Declan Amoako
+	* @author Allen Bai
+	* 
+	*/
 	public boolean asteroidOnScreen(Asteroid a) {
 		for (Point p : a.getPoints()) {
 			if (this.background.contains(p)) {
@@ -361,6 +450,16 @@ class AsteroidsGame extends Game {
 		return false;
 	}
 
+	
+	/**
+	* The main paint for AsteroidsGame.
+	* This is a wrapper method that encapsulates more complex methods.
+	* 
+	* 
+	* @author Declan Amoako
+	* @author Allen Bai
+	* 
+	*/
 	public void paint(Graphics brush) {
 
 		if (GameData.gameOver == true) {
@@ -371,14 +470,31 @@ class AsteroidsGame extends Game {
 		// update game 
 		updateGame(brush);
 	}
-
+	
+	/**
+	* This method is used to display the End Game screen.
+	* Does not do anything apart from display some text
+	* 
+	* 
+	* @author Declan Amoako
+	* @author Allen Bai
+	* 
+	*/
 	private void endGame(Graphics brush) {
 		brush.setColor(Color.white);
 		brush.setFont(new Font("Impact", Font.PLAIN, 30));
 		brush.drawString("GAME OVER", this.width / 2 - 100, this.height / 2 - 100);
 		brush.drawString("SCORE: " + GameData.points, this.width / 2 + 50, this.height / 2);
 	}
-
+	
+	/**
+	* The main method for AsteroidsGame
+	* 
+	* 
+	* @author Declan Amoako
+	* @author Allen Bai
+	* 
+	*/
 	public static void main(String[] args) {
 		AsteroidsGame a = new AsteroidsGame();
 		a.repaint();
