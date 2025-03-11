@@ -5,7 +5,7 @@ import java.awt.Graphics;
 import java.awt.event.*;
 import java.util.Arrays;
 import java.util.*;
-public class Spaceship extends Polygon implements KeyListener {
+public class Spaceship extends Polygon implements KeyListener, Damagable {
 
 	/*
 	1. constructor to create spaceship
@@ -33,14 +33,8 @@ public class Spaceship extends Polygon implements KeyListener {
 	private static double moveVelocity = 0;
 	private static double turnVelocity = 0;
 	int length, height;
-	private Direction direction;
+	private int health = 3;
 	private ArrayList<Laser> lasers;
-
-	private enum Direction {
-		UP, 
-		DOWN, 
-		NONE
-	}
 
 
 	private class Laser extends Polygon {
@@ -88,7 +82,6 @@ public class Spaceship extends Polygon implements KeyListener {
 	public Spaceship(Point[] points, Point offset, double rotation, int length, 
 			int height) {
 		super (points, offset, rotation);
-		this.direction = Direction.NONE;
 		this.lasers =  new ArrayList<Laser>();
 		this.length = length;
 		this.height = height;
@@ -261,6 +254,16 @@ public class Spaceship extends Polygon implements KeyListener {
 	public void keyReleased(KeyEvent e) {currKeys.remove(e.getKeyCode());}
 
 	public void keyTyped(KeyEvent e) {}
+
+	@Override
+	public int getHealth() {
+		return this.health;
+	}
+
+	@Override
+	public void takeHealth(int amt) {
+		this.health -= amt;
+	}
 
 
 

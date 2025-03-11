@@ -250,6 +250,24 @@ class AsteroidsGame extends Game {
 		brush.setColor(Color.white);
 		brush.setFont(new Font("Impact", Font.PLAIN, 30));
 		brush.drawString("Points: " + PointHolder.points, 20, this.height - 90);
+		
+		brush.setColor(Color.red);
+		brush.setFont(new Font("Helvetica", Font.PLAIN, 30));
+		
+		switch (this.spaceship.getHealth()) {
+			case 3:
+				brush.drawString("❤️❤️❤️", 20, this.height/20);
+				break;
+			case 2:
+				brush.drawString("❤️❤️", 20, this.height/20);
+				break;
+			case 1:
+				brush.drawString("❤️", 20, this.height/20);
+				break;
+			default:
+				brush.drawString(":(", 20, this.height/20);
+				break;
+		}
 
 		// move and update spaceship (includes lasers)
 		brush.setColor(Color.white);
