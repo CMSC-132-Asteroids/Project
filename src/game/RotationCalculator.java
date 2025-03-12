@@ -1,5 +1,7 @@
 package game;
 
+
+
 @FunctionalInterface
 public interface RotationCalculator {
 	

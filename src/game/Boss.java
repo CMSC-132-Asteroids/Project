@@ -3,6 +3,14 @@ package game;
 import java.awt.Color;
 import java.awt.Graphics;
 
+/**
+* Boss class that represents the boss that is spawned at a certain threshold.
+* 
+* 
+* @author Declan Amoako
+* @author Allen Bai
+* 
+*/
 public class Boss extends Polygon implements Damagable {
 
 	
@@ -12,10 +20,30 @@ public class Boss extends Polygon implements Damagable {
 	private int ticks = 0;
 	private int health = 5;
 	
+	
+	/**
+	* The constructor for Boss
+	* 
+	* 
+	* @author Declan Amoako
+	* @author Allen Bai
+	* 
+	*/
     public Boss(Point[] points, Point offset, double rotation) {
         super (points, offset, rotation);
     }
     
+    
+    /**
+    * The paint method for boss.
+    * handles drawing the boss.
+    * Contains logic to configure when to display it or not.
+    * 
+    * @param brush is the current graphics context passed down from AsteroidsGame
+    * @author Declan Amoako
+    * @author Allen Bai
+    * 
+    */
     public void paint(Graphics brush) { 
     	// change laser's color to be red
     	
@@ -38,6 +66,16 @@ public class Boss extends Polygon implements Damagable {
     	brush.fillPolygon(xPoints, yPoints, numPoints);
     }
     
+    /**
+    * The move method for the boss.
+    * This method handles reseting the health of the boss after the player defeats them.
+    * It also handles generating the randomized movement of the boss.
+    * 
+    * 
+    * @author Declan Amoako
+    * @author Allen Bai
+    * 
+    */
     public void move() {
     	// If boss health is gone
     	if(this.getHealth() <= 0) {
@@ -64,14 +102,39 @@ public class Boss extends Polygon implements Damagable {
     	this.ticks++;
     }
     
+    /**
+    * Getter method for display.
+    * 
+    * 
+    * @author Declan Amoako
+    * @author Allen Bai
+    * 
+    */
     public boolean getDisplay() {
     	return this.display;
     }
     
+    /**
+    * Toggle method for display.
+    * 
+    * 
+    * @author Declan Amoako
+    * @author Allen Bai
+    * 
+    */
     public void setDisplay() {
     	this.display = !this.display;
     }
     
+    /**
+    * A private method that is used to determine the movement of the boss.
+    * Contains a Math.random() call which determines if to return true or false
+    * 
+    * @return a boolean represeting left or right (true for right and false for left)
+    * @author Declan Amoako
+    * @author Allen Bai
+    * 
+    */
     private boolean determineMovement() {
     	
     	if(Math.random() > 0.50) {
@@ -81,6 +144,16 @@ public class Boss extends Polygon implements Damagable {
     	return false;
     }
     
+    /**
+     * A private method that is used to determine the movement of the boss.
+     * Contains a Math.random() call which determines if to return true or false
+     * 
+     * @param the width parameter is the max width before wrap
+     * @param the height parameter is the max height before wrap
+     * @author Declan Amoako
+     * @author Allen Bai
+     * 
+     */
     public void wrapScreen(int width, int height) {
 		
 		// find current position

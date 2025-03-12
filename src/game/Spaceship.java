@@ -116,7 +116,21 @@ public class Spaceship extends Polygon implements KeyListener, Damagable {
 		this.lasers =  new ArrayList<Laser>();
 
 	}
-
+	
+	/**
+	* The main paint for Spaceship.
+	* This method handles the drawing of the Spaceship in all of its states.
+	* It handles the drawing for the lasers.
+	* It also handles collision for the laser with asteroids and boss.
+	* 
+	* 
+	* @param brush is the current graphics context passed from AsteroidsGame
+	* @param asteroids is the amount of asteroids currently on the screen
+	* @param back represents the background object
+	* @param boss represents the boss object
+	* @author Declan Amoako
+	* @author Allen Bai
+	*/
 	public void paint(Graphics brush, ArrayList<Asteroid> asteroids, Polygon back, Boss boss) {
 		
 		if(this.invulnerable) {
@@ -207,7 +221,13 @@ public class Spaceship extends Polygon implements KeyListener, Damagable {
 		}
 	}
 
-
+	/**
+	* The takeInput method
+	* 
+	* 
+	* @author Declan Amoako
+	* @author Allen Bai
+	*/
 	public void takeInput() {
 		
 		// dampen move and turn velocity (multiply until 0 each frame)
@@ -237,6 +257,15 @@ public class Spaceship extends Polygon implements KeyListener, Damagable {
 		move();
 	}
 	
+	/**
+	* The move method for the Spaceship.
+	* Private due to it not being needed outside this class.
+	* It is called by takeInput @see takeInput();
+	* 
+	* 
+	* @author Declan Amoako
+	* @author Allen Bai
+	*/
 	private void move() {
 		
 		// find current position and get x and y coords
@@ -256,6 +285,12 @@ public class Spaceship extends Polygon implements KeyListener, Damagable {
 		this.rotate((int) turnVelocity);
 	}
 	
+	/**
+	* Private method that handles the shooting of the laser.
+	* 
+	* @author Declan Amoako
+	* @author Allen Bai
+	*/
 	private void shootLaser() {
 		
 		// get the point that corresponds to front of spaceship
@@ -288,6 +323,16 @@ public class Spaceship extends Polygon implements KeyListener, Damagable {
 		Laser.laserCD--;
 	}
 	
+    /**
+     * A private method that is used to determine the movement of the boss.
+     * Contains a Math.random() call which determines if to return true or false
+     * 
+     * @param the width parameter is the max width before wrap
+     * @param the height parameter is the max height before wrap
+     * @author Declan Amoako
+     * @author Allen Bai
+     * 
+     */
 	public void wrapScreen(int width, int height) {
 		
 		// find current position
@@ -327,6 +372,7 @@ public class Spaceship extends Polygon implements KeyListener, Damagable {
 	public void setHealth(int h) {
 		this.health = h;
 	}
+	
 	@Override
 	public int getHealth() {
 		return this.health;

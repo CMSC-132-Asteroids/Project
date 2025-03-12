@@ -28,7 +28,16 @@ import game.Point;
 */
 class AsteroidsGame extends Game {
 	
-	//Inner class used to keep track of all Game Data
+	/**
+	* GameData inner class.
+	* This class is designed to hold all the data needed for the game.
+	* 
+	* 
+	* 
+	* @author Declan Amoako
+	* @author Allen Bai
+	* 
+	*/
 	public static class GameData {
 		public static int points = 0;
 		public static int startTimer = 100;
@@ -488,10 +497,9 @@ class AsteroidsGame extends Game {
 	* The main paint for AsteroidsGame.
 	* This is a wrapper method that encapsulates more complex methods.
 	* 
-	* 
+	* @param brush is the current graphics context
 	* @author Declan Amoako
 	* @author Allen Bai
-	* 
 	*/
 	public void paint(Graphics brush) {
 

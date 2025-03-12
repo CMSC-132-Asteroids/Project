@@ -26,9 +26,7 @@ public class Asteroid extends Polygon {
     }
     
 
-	public void move() {
-
-		
+	public void move() {	
 		// calculate change in laser's coordinates using rotation and velocity
 		double changeX = baseVelocity * Math.cos(Math.toRadians(this.rotation));
 		double changeY = baseVelocity * Math.sin(Math.toRadians(this.rotation));
@@ -39,7 +37,6 @@ public class Asteroid extends Polygon {
 		this.position.setY(currY - changeY);
 	}
 	
-	@Override
     public void paint(Graphics brush) {
 		
     	// access Polygon's shape instance variable 
