@@ -137,10 +137,9 @@ class AsteroidsGame extends Game {
 	* 
 	*/
 	public void initializeBoss() {
-		int length = 30;
+		int length = 50;
 		int height = (int) (Math.sqrt(3) / 2 * length);
-		Point[] bossPoints = {new Point(0, 0), new Point(length / 2, 
-				height / 5), new Point(length, 0), new Point(length / 2, height)};
+		Point[] bossPoints = {new Point(0, 0), new Point(200, 0),  new Point(200, 200), new Point(0, 200)};
 
 		// calculate offset to place center of spaceship at center of screen
 		int xCenter = this.width / 2 - length / 2, yCenter = this.height / 5 - 
@@ -305,7 +304,7 @@ class AsteroidsGame extends Game {
 					
 					public void destroy() {
 						GameData.points += 1000;
-
+						GameData.goldenAsteroid = false;
 					}
 				});
 			} else {
@@ -380,7 +379,7 @@ class AsteroidsGame extends Game {
 		// move and update spaceship (includes lasers)
 		brush.setColor(Color.white);
 		this.spaceship.takeInput();
-		this.spaceship.paint(brush, this.asteroids, this.background);
+		this.spaceship.paint(brush, this.asteroids, this.background, this.boss);
 		
 		
 		//If ThresHold reached
@@ -392,9 +391,37 @@ class AsteroidsGame extends Game {
 		//If the boss exists and is displayable do this
 		if(this.boss != null && this.boss.getDisplay()) {
 			//rotateBoss();
+			
+			brush.setColor(Color.red);
+			brush.setFont(new Font("Helvetica", Font.PLAIN, 30));
+			//Boss Health
+			switch (this.boss.getHealth()) {
+			case 5:
+				brush.drawString("❤️❤️❤️❤️❤️", 20, this.height/10);
+				break;
+			case 4:
+				brush.drawString("❤️❤️❤️❤️", 20, this.height/10);
+				break;
+			case 3:
+				brush.drawString("❤️❤️❤️", 20, this.height/10);
+				break;
+			case 2:
+				brush.drawString("❤️❤️", 20, this.height/10);
+				break;
+			case 1:
+				brush.drawString("❤️", 20, this.height/10);
+				break;
+			default:
+				brush.drawString("", 20, this.height/20);
+				this.spaceship.setHealth(3);
+				this.boss.setDisplay();
+				break;
+			}
+			
 			this.boss.move();
 			this.boss.paint(brush);
 			this.boss.wrapScreen(this.width, this.height);
+			
 		}
 
 		// adjustElementPositions();
@@ -490,7 +517,7 @@ class AsteroidsGame extends Game {
 		brush.setColor(Color.white);
 		brush.setFont(new Font("Impact", Font.PLAIN, 30));
 		brush.drawString("GAME OVER", this.width / 2 - 100, this.height / 2 - 100);
-		brush.drawString("SCORE: " + GameData.points, this.width / 2 + 50, this.height / 2);
+		brush.drawString("SCORE: " + GameData.points, this.width / 2 - 100, this.height / 2);
 	}
 	
 	/**

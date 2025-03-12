@@ -39,6 +39,11 @@ public class Boss extends Polygon implements Damagable {
     }
     
     public void move() {
+    	// If boss health is gone
+    	if(this.getHealth() <= 0) {
+    		this.health = 5;
+    	}
+    	
     	if(this.ticks >= 50) {
     		this.ticks = 0;
     		this.currentMov = this.determineMovement();

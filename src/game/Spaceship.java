@@ -117,7 +117,7 @@ public class Spaceship extends Polygon implements KeyListener, Damagable {
 
 	}
 
-	public void paint(Graphics brush, ArrayList<Asteroid> asteroids, Polygon back) {
+	public void paint(Graphics brush, ArrayList<Asteroid> asteroids, Polygon back, Boss boss) {
 		
 		if(this.invulnerable) {
 			this.invTicks--;
@@ -159,14 +159,22 @@ public class Spaceship extends Polygon implements KeyListener, Damagable {
 				// check if any asteroids collide with laser
 				if (a.collides(l)) {
 					
-					// destroy asteroids and re
-					a.destroy();
+					// destroy asteroids
+					a.destroy(boss);
 					asteroids.remove(j);
 					collided = true;
 					j--;
 				}
-				
 			}
+			
+			// check if laser collided with boss
+			if(boss.getDisplay()) {
+				if(boss.collides(l)) {
+					boss.takeHealth(1);
+					collided = true;
+				}
+			}
+			
 			
 			Point[] laserPoint = l.getPoints();
 			boolean laserOut = false;
@@ -315,7 +323,10 @@ public class Spaceship extends Polygon implements KeyListener, Damagable {
 	public void keyReleased(KeyEvent e) {currKeys.remove(e.getKeyCode());}
 
 	public void keyTyped(KeyEvent e) {}
-
+	
+	public void setHealth(int h) {
+		this.health = h;
+	}
 	@Override
 	public int getHealth() {
 		return this.health;

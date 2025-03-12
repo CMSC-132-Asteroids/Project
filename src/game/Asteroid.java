@@ -19,7 +19,7 @@ import game.AsteroidsGame.GameData;
 */
 public class Asteroid extends Polygon {
 	
-	private final static double baseVelocity = 5.0;
+	protected final static double baseVelocity = 5.0;
 	
     public Asteroid(Point[] points, Point offset, double rotation) {
         super(points, offset, rotation);
@@ -60,7 +60,12 @@ public class Asteroid extends Polygon {
     }
  	
 	//Destroys the asteroid
-	public void destroy() {
-		GameData.points += 100;
+	public void destroy(Boss boss) {
+		//We dont want to give the player points while the boss is active instead remove points
+		if(!boss.getDisplay()) {
+			GameData.points += 100;
+		} else {
+			GameData.points -= 50;
+		}
 	}
 }
