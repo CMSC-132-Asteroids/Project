@@ -1,10 +1,7 @@
 package game;
 
 /**
-* Damagable interface represents an object that can take damage
-* 
-* 
-* 
+* Damagable interface represents objects that can take damage.
 * 
 * @author Declan Amoako
 * @author Allen Bai
@@ -12,26 +9,16 @@ package game;
 */
 public interface Damagable {
 	/**
-	* Gets the current health of an object
+	* Gets the current health of an object.
 	* 
-	* 
-	* 
-	* @return an integer representing the current health
-	* @author Declan Amoako
-	* @author Allen Bai
+	* @return int representing the current health
 	* 
 	*/
 	int getHealth();
 	
 	/**
-	* Gets the current health of an object
-	* 
-	* 
-	* 
-	* @param takes an integer that represents the amount to take from the objects health
-	* @author Declan Amoako
-	* @author Allen Bai
+	* Reduces the current health of an object
 	* 
 	*/
-	void takeHealth(int amt);
+	void getHit();
 }

@@ -4,8 +4,8 @@ import java.awt.Color;
 import java.awt.Graphics;
 
 /**
-* Boss class that represents the boss that is spawned at a certain threshold.
-* 
+* Boss class represents the red square boss spawned each time player reaches
+* a certain number of points.
 * 
 * @author Declan Amoako
 * @author Allen Bai
@@ -13,20 +13,18 @@ import java.awt.Graphics;
 */
 public class Boss extends Polygon implements Damagable {
 
-	
-	//internal use
 	private boolean display = false;
-	private boolean currentMov = false;
+	private boolean movingLeft = false;
 	private int ticks = 0;
 	private int health = 5;
 	
 	
 	/**
-	* The constructor for Boss
+	* Initializes a boss using the Polygon constructor.
 	* 
-	* 
-	* @author Declan Amoako
-	* @author Allen Bai
+	* @param points
+	* @param offset
+	* @param rotation
 	* 
 	*/
     public Boss(Point[] points, Point offset, double rotation) {
@@ -35,151 +33,85 @@ public class Boss extends Polygon implements Damagable {
     
     
     /**
-    * The paint method for boss.
-    * handles drawing the boss.
-    * Contains logic to configure when to display it or not.
+    * Changes brush color to red and paints the boss if its visible.
     * 
-    * @param brush is the current graphics context passed down from AsteroidsGame
-    * @author Declan Amoako
-    * @author Allen Bai
+    * @param brush 
     * 
     */
     public void paint(Graphics brush) { 
+    	
+    	// check whether to update boss depending on if its being displayed
+    	if (!this.display) return;
+    	
     	// change laser's color to be red
-    	
-    	if(!this.display) return;
-    	
     	brush.setColor(Color.red);
-    				
-    	// loop through Polygon instance variable for points   	
-    	Point[] bossPoints = this.getPoints();
-    	int numPoints = bossPoints.length;
-    	int[] xPoints = new int[numPoints], yPoints = new int[numPoints];
-
-    	// create two arrays for x-coords and y-coords
-    	for (int idx = 0; idx < numPoints; idx++) {
-    			xPoints[idx] = (int) bossPoints[idx].getX();
-    			yPoints[idx] = (int) bossPoints[idx].getY();
-    	}
-
-    	// cdraw spaceship using x-coords and y-coords
-    	brush.fillPolygon(xPoints, yPoints, numPoints);
+    	super.paint(brush);
     }
     
     /**
-    * The move method for the boss.
-    * This method handles reseting the health of the boss after the player defeats them.
-    * It also handles generating the randomized movement of the boss.
-    * 
-    * 
-    * @author Declan Amoako
-    * @author Allen Bai
+    * Randomly generates the boss' next movement. The boss' health is reset by
+    * this method after a player defeats it.
     * 
     */
-    public void move() {
-    	// If boss health is gone
-    	if(this.getHealth() <= 0) {
-    		this.health = 5;
-    	}
+    protected void move() {
     	
-    	if(this.ticks >= 50) {
+    	// reset boss health if defeated
+    	if (this.getHealth() <= 0) {this.health = 5;}
+    	
+    	// changes the boss' movement ever
+    	if (this.ticks >= 50) {
     		this.ticks = 0;
-    		this.currentMov = this.determineMovement();
+    		this.movingLeft = (Math.random() > .50) ? true : false;
     	}
     	
-    	// 
+    	// get boss' curernt position and calculate horizantal change in position
     	double currX = this.position.getX();
-    	
     	double changeX = Math.floor(Math.random() * 10);
     	
-    	//Move right if true else move left
-    	if(this.currentMov) {		
-    		this.position.setX(currX + changeX);
-    	} else  {
+    	// update boss based on if moving left or right
+    	if (this.movingLeft) {		
     		this.position.setX(currX - changeX);
+    	} else  {
+    		this.position.setX(currX + changeX);
     	}
     	
     	this.ticks++;
     }
     
     /**
-    * Getter method for display.
+    * Get the boss' current visibility.
     * 
-    * 
-    * @author Declan Amoako
-    * @author Allen Bai
+    * @return a boolean that represents whether boss can be seen
     * 
     */
-    public boolean getDisplay() {
+    protected boolean getVisibility() {
     	return this.display;
     }
     
     /**
-    * Toggle method for display.
-    * 
-    * 
-    * @author Declan Amoako
-    * @author Allen Bai
+    * Toggle the boss' visibility.
     * 
     */
-    public void setDisplay() {
+    protected void changeVisibility() {
     	this.display = !this.display;
     }
-    
+
     /**
-    * A private method that is used to determine the movement of the boss.
-    * Contains a Math.random() call which determines if to return true or false
+    * Get the boss' current health.
     * 
-    * @return a boolean represeting left or right (true for right and false for left)
-    * @author Declan Amoako
-    * @author Allen Bai
-    * 
+    * @return an integer that represents remaining HP of boss
     */
-    private boolean determineMovement() {
-    	
-    	if(Math.random() > 0.50) {
-    		return true;
-    	}
-    	
-    	return false;
-    }
-    
-    /**
-     * A private method that is used to determine the movement of the boss.
-     * Contains a Math.random() call which determines if to return true or false
-     * 
-     * @param the width parameter is the max width before wrap
-     * @param the height parameter is the max height before wrap
-     * @author Declan Amoako
-     * @author Allen Bai
-     * 
-     */
-    public void wrapScreen(int width, int height) {
-		
-		// find current position
-		Point position = this.position;
-		double currX = position.getX();
-		double currY = position.getY();
-
-		// check all directions of screen adjust position accordingly
-		if (currX <= 0) {
-			position.setX(currX + width);
-		} else if (currX > width) {
-			position.setX(currX - width);
-		} else if (currY <= 0) {
-			position.setY(currY + height);
-		} else if (currY > height) {
-			position.setY(currY - height);
-		}
-	}
-
 	@Override
 	public int getHealth() {
 		return this.health;
 	}
 
+    /**
+    * Decrement boss' current health by 1.
+    * 
+    */
 	@Override
-	public void takeHealth(int amt) {
-		this.health -= amt;
+	public void getHit() {
+		this.health--;
 	}
 }

@@ -10,11 +10,17 @@ import java.awt.event.*;
 
 import javax.swing.JFrame;
 
+
 abstract class Game extends Canvas {
 	protected boolean on = true;
 	protected int width, height;
 	protected Image buffer;
 
+	/**
+	* Initializes a game object. Changed to make default size of window the size
+	* of the entire device screen.
+	* 
+	*/
 	public Game(String name, int inWidth, int inHeight) {
 		width = inWidth;
 		height = inHeight;
@@ -27,7 +33,7 @@ abstract class Game extends Canvas {
 		// Frame can be read as 'window' here.
 		Frame frame = new Frame(name);
 		frame.add(this);
-		frame.setSize(width,height);
+		frame.setSize(this.width, this.height);
 		frame.setVisible(true);
 		frame.setResizable(true);
 		frame.setExtendedState(JFrame.MAXIMIZED_BOTH);

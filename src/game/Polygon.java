@@ -41,12 +41,6 @@ class Polygon {
 			p.y -= origin.y;
 		}
 	}
-	
-	@Override
-	public String toString() {
-		return Arrays.toString(this.getPoints());
-	}
-	
 
 	// "getPoints" applies the rotation and offset to the shape of the polygon.
 	public Point[] getPoints() {
@@ -84,7 +78,6 @@ class Polygon {
 
 	public void rotate(int degrees) {rotation = (rotation+degrees)%360;}
 
-	public void setRotation(double rotation ) {this.rotation = rotation;}
 	/*
   The following methods are private access restricted because, as this access
   level always implies, they are intended for use only as helpers of the
@@ -113,37 +106,80 @@ class Polygon {
 		return new Point(Math.abs(sum.x/(6*area)),Math.abs(sum.y/(6*area)));
 	}
 
-    public void paint(Graphics brush) {
+	/**
+	* Default paint method for any shape that uses its points and the 
+	* fillPolygon method from the Graphics class to update shpaes on screen.
+	* 
+	* @param brush
+	* 
+	*/
+	protected void paint(Graphics brush) {
     	
     	// access Polygon's shape instance variable 
-    	Point[] spaceshipPoints = this.getPoints();
+    	Point[] polygonPoints = this.getPoints();
     	
     	// loop through Polygon instance variable for points   	
-    	int numPoints = spaceshipPoints.length;
+    	int numPoints = polygonPoints.length;
     	int[] xPoints = new int[numPoints], yPoints = new int[numPoints];
     	
     	// create two arrays for x-coords and y-coords
     	for (int idx = 0; idx < numPoints; idx++) {
-    		xPoints[idx] = (int) spaceshipPoints[idx].getX();
-    		yPoints[idx] = (int) spaceshipPoints[idx].getY();
+    		xPoints[idx] = (int) polygonPoints[idx].getX();
+    		yPoints[idx] = (int) polygonPoints[idx].getY();
     	}
     	
     	// cdraw spaceship using x-coords and y-coords
     	brush.fillPolygon(xPoints, yPoints, numPoints);
     }
     
-    public boolean collides(Polygon other) {
-    	boolean result = false;
-    	Point[] otherPoints = other.getPoints();
+	/**
+	* Default paint method for any shape that uses its poitns and the 
+	* fillPolygon method from the Graphics class to update shpaes on screen.
+	* 
+	* @param another Polygon object to check for collision
+	* @return boolean that represents whether the two polygons are colliding
+	*/
+    protected boolean collides(Polygon other) {
     	
-    	for(Point otherP: otherPoints) {
-    			if(this.contains(otherP)) {
-    				result = true;
-    				break;
+    	// loops through all points of the other polygon
+    	for (Point point: other.getPoints()) {
+    		
+    		// if a point in the other polygon are contained within "this"
+    		// then the shapes are touching
+    			if (this.contains(point)) {
+    				return true;
     			}
     	}
     	
-    	
-    	return result;
+    	// otherwise they are not touching
+    	return false;
     }
+    
+    /**
+     * Sends an object to the other side of the screen if all its points pass
+     * a given edge (top, bottom, left or right).
+     * 
+     * @param width of the screen
+     * @param height of the screen
+     * 
+     */
+	protected void wrapScreen(int width, int height) {
+		
+		// find current position
+		Point position = this.position;
+		double currX = position.getX();
+		double currY = position.getY();
+
+		// check all directions of screen and updates position to oppsite side 
+		// of screen
+		if (currX <= 0) {
+			position.setX(currX + width);
+		} else if (currX > width) {
+			position.setX(currX - width);
+		} else if (currY <= 0) {
+			position.setY(currY + height);
+		} else if (currY > height) {
+			position.setY(currY - height);
+		}
+	}
 }

@@ -1,12 +1,5 @@
 package game;
 
-/*
-CLASS: YourGameNameoids
-DESCRIPTION: Extending Game, YourGameName is all in the paint method.
-NOTE: This class is the metaphorical "main method" of your program,
-      it is your control center.
-
- */
 import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
@@ -17,27 +10,26 @@ import game.Point;
 
 
 /**
-* AsteroidsGame is the class that holds the main game event loop.
-* It holds all the objects in the game, and decides their behavior.
-* It extends the Abstract class which provides us all the functionality needed to display a window.
-* 
-* 
-* @author Declan Amoako
-* @author Allen Bai
-* 
-*/
+ * AsteroidsGame is the class that holds the main game event loop.
+ * It holds all the objects in the game, and decides their behavior.
+ * It extends the Abstract class which provides us all the functionality 
+ * needed to display a window.
+ * 
+ * @author Declan Amoako
+ * @author Allen Bai
+ * 
+ */
 class AsteroidsGame extends Game {
-	
+
 	/**
-	* GameData inner class.
-	* This class is designed to hold all the data needed for the game.
-	* 
-	* 
-	* 
-	* @author Declan Amoako
-	* @author Allen Bai
-	* 
-	*/
+	 * The GameData inner class is designed to hold all the data needed the game 
+	 * such as current score, whether the game is over, a cooldown for the
+	 * next asteroid spawn and the points necessary for the boss to spawn.
+	 * 
+	 * @author Declan Amoako
+	 * @author Allen Bai
+	 * 
+	 */
 	public static class GameData {
 		public static int points = 0;
 		public static int startTimer = 100;
@@ -45,7 +37,7 @@ class AsteroidsGame extends Game {
 		public static double asteroidSpawnFactor = 1;
 		public static boolean goldenAsteroid = false;
 		public static boolean gameOver = false;
-		public static int bossThreshold = 100;
+		public static int bossThreshold = 500;
 	}
 
 	private Spaceship spaceship;
@@ -53,20 +45,12 @@ class AsteroidsGame extends Game {
 	private Polygon background;
 	private ArrayList<Asteroid> asteroids = new ArrayList<>();
 
-	
 	/**
-	* Default constructor for AsteroidGame
-	* It initializes all the main game objects.
-	* These objects are:
-	* background
-	* spaceship
-	* Boss
-	* 
-	* 
-	* @author Declan Amoako
-	* @author Allen Bai
-	* 
-	*/
+	 * Default constructor for AsteroidGame
+	 * It initializes all the main game objects including spaceship, boss
+	 * and background.
+	 * 
+	 */
 	public AsteroidsGame() {
 		super("Asteroids!", 0, 0);
 		this.setFocusable(true);
@@ -75,25 +59,20 @@ class AsteroidsGame extends Game {
 		// initialize background
 		initializeBackground();
 
-		// create spaceship, track keystrokes for movement
+		// create spaceship
 		initializeSpaceship();
-		
-		//Creates the boss but does not display the boss
+
+		// creates but does not display boss
 		initializeBoss();
 
 	}
-	
+
 	/**
-	* Initializes the background.
-	* The background is used to determine when an object is off screen.
-	* It essentially represents the screen.
-	* 
-	* 
-	* @author Declan Amoako
-	* @author Allen Bai
-	* 
-	*/
-	public void initializeBackground() {
+	 * Initializes the background using the size of the screen.
+	 * The background is used to determine when an object is off screen.
+	 * 
+	 */
+	private void initializeBackground() {
 
 		// create rectangle background
 		Point[] backgroundPoints = {new Point(0, 0), new Point(this.width, 0), 
@@ -102,110 +81,68 @@ class AsteroidsGame extends Game {
 		double rotation = 0.0;
 		this.background = new Polygon(backgroundPoints, offset, rotation);
 	}
-	
-	
-	/**
-	* Initializes the Spaceship.
-	* The Spaceship represents the player.
-	* The player can move using WASD or the arrow keys.
-	* The player can shoot using SPACEBAR.
-	* 
-	* 
-	* @author Declan Amoako
-	* @author Allen Bai
-	* 
-	*/
-	public void initializeSpaceship() {
 
-		// create equalateral triangle
+
+	/**
+	 * Initializes the Spaceship.
+	 * The Spaceship represents the player.
+	 * The player can move using WASD or the arrow keys.
+	 * The player can shoot using SPACEBAR.
+	 * 
+	 */
+	private void initializeSpaceship() {
+
+		// create equalateral triangle (with divet)
 		int length = 30;
 		int height = (int) (Math.sqrt(3) / 2 * length);
 		Point[] spaceshipPoints = {new Point(0, 0), new Point(length / 2, 
-				height / 5), new Point(length, 0), new Point(length / 2, height)};
+				height / 5), new Point(length, 0), new Point(length / 2, 
+						height)};
 
 		// calculate offset to place center of spaceship at center of screen
 		int xCenter = this.width / 2 - length / 2, yCenter = this.height / 2 - 
-				height / 2 ; 
-
+				height / 2 ;
 		Point position = new Point(xCenter, yCenter); 
 		double rotation = 180.0;
 		this.spaceship = new Spaceship(spaceshipPoints, position, rotation);
 
-		// give spaceship a way to track keys
+		// give spaceship a way to track keystrokes
 		this.addKeyListener(spaceship);
 	}
-	
+
 	/**
-	* Initializes the Boss.
-	* The Boss is the hardest objective for the game that only occurs at certain points.
-	* The Boss's only role is to make the game difficult for the player.
-	* 
-	* 
-	* @author Declan Amoako
-	* @author Allen Bai
-	* 
-	*/
-	public void initializeBoss() {
+	 * Initializes the Boss.
+	 * The Boss is the hardest objective for the game that only occurs appears 
+	 * once the player has a certain amount of points (starting at 500 and 
+	 * doubling each time the boss is defeated).
+	 * 
+	 */
+	private void initializeBoss() {
 		int length = 50;
 		int height = (int) (Math.sqrt(3) / 2 * length);
-		Point[] bossPoints = {new Point(0, 0), new Point(200, 0),  new Point(200, 200), new Point(0, 200)};
+		Point[] bossPoints = {new Point(0, 0), new Point(200, 0),  
+				new Point(200, 200), new Point(0, 200)};
 
-		// calculate offset to place center of spaceship at center of screen
+		// calculate offset to place center of boss at center of screen
 		int xCenter = this.width / 2 - length / 2, yCenter = this.height / 5 - 
 				height / 2 ; 
-
-		Point position = new Point(xCenter, yCenter); 
-		
+		Point position = new Point(xCenter, yCenter); 		
 		this.boss = new Boss(bossPoints, position, 0);
 	}
-	
-	public void rotateBoss() {
 
-		// get spaceship's position
-		Point spaceshipPos = this.spaceship.position;
-		double spaceshipX = spaceshipPos.getX();
-		double spaceshipY = spaceshipPos.getY();
-
-		// calculate angle of asteroid based on spaceship and spawn position
-		//RotationCalculator topLeft = (())
-		double bossX = this.boss.position.getX();
-		double bossY = this.boss.position.getY();
-		double rotation = Math.toDegrees(Math.acos(Math.abs((bossX - spaceshipX)) 
-				/ (Math.sqrt(Math.pow(Math.abs(bossX - spaceshipX), 2) + 
-						Math.pow(spaceshipY, 2)))));
-		
-		// calculate different rotations based on spawn position
-		RotationCalculator bottomLeft = ((angle) -> (0));
-		RotationCalculator topLeft = ((angle) -> (0));
-		RotationCalculator bottomRight = ((angle) -> (0));
-		RotationCalculator r1 = ((angle) -> (-180 - angle));
-		
-		if (bossX > spaceshipX) {
-			rotation = (bossY < spaceshipY) ? r1.getRotation(rotation) : 
-				bottomLeft.getRotation(rotation);
-		} else {
-			rotation = (bossY < spaceshipY) ? bottomLeft.getRotation(rotation) : 
-				bottomRight.getRotation(rotation);
-		}
-		this.boss.setRotation(rotation);
-	}
-	
-	
 	/**
-	* Handles the spawn system for the asteroid.
-	* 
-	* 
-	* 
-	* @author Declan Amoako
-	* @author Allen Bai
-	* 
-	*/
-	public void spawnAsteroid() {
+	 * Spawns an asteroid on a random edge of the screen if an the cooldown for
+	 * an asteroid spawn is 0. The trajectory is set toward the player's current
+	 * position and the shape is determined randomly. A golden asteroid will also
+	 * be spawned when the player has at least 1000 points.
+	 * 
+	 */
+	private void spawnAsteroid() {
 
 		// check CD for asteroid
 		if (GameData.asteroidTimer == 0) {
-			
-			// randomize 
+
+			// randomize number of points, size and spawn location
 			Random random = new Random();
 			int numPoints = random.nextInt(3,7);
 			int scale = random.nextInt(25, 75); 
@@ -214,40 +151,40 @@ class AsteroidsGame extends Game {
 			int spawnX, spawnY; 
 			double rotation;
 			double velocity;
-			
+
 			// get spaceship's position
 			Point spaceshipPos = this.spaceship.position;
 			double spaceshipX = spaceshipPos.getX();
 			double spaceshipY = spaceshipPos.getY();
 
 			// calculate angle of asteroid based on spaceship and spawn position
-			//RotationCalculator topLeft = (())
 			spawnX = random.nextInt(-scale, this.width + scale);
 			spawnY = (spawnLocation == 0) ? -scale : this.height - scale * 2;
 			rotation = Math.toDegrees(Math.acos(Math.abs((spawnX - spaceshipX)) 
 					/ (Math.sqrt(Math.pow(Math.abs(spawnX - spaceshipX), 2) + 
 							Math.pow(spaceshipY, 2)))));
-			
-			// calculate different rotations based on spawn position
-			RotationCalculator topRight = ((angle) -> (-angle));
-			RotationCalculator topLeft = ((angle) -> (180 + angle));
-			RotationCalculator bottomRight = ((angle) -> (angle));
-			RotationCalculator bottomLeft = ((angle) -> (180 - angle));
-			
+
+			// adjust asteroid rotation based on spawn position
+			AsteroidRotator topRight = ((angle) -> (-angle));
+			AsteroidRotator topLeft = ((angle) -> (180 + angle));
+			AsteroidRotator bottomRight = ((angle) -> (angle));
+			AsteroidRotator bottomLeft = ((angle) -> (180 - angle));
 			if (spawnX > spaceshipX) {
-				rotation = (spawnY < 0) ? topRight.getRotation(rotation) : 
-					bottomRight.getRotation(rotation);
+				rotation = (spawnY < 0) ? topRight.rotate(rotation) : 
+					bottomRight.rotate(rotation);
 			} else {
-				rotation = (spawnY < 0) ? topLeft.getRotation(rotation) : 
-					bottomLeft.getRotation(rotation);
+				rotation = (spawnY < 0) ? topLeft.rotate(rotation) : 
+					bottomLeft.rotate(rotation);
 			}
+
+			// randomly adjust rotation so asteroid's don't fire directly at 
+			// player
 			rotation += random.nextInt(-20, 20);
 
-
-			// create new point to use as offset
+			// create the spawn point of the asteroid to be used as its offset
 			Point spawnPoint = new Point(spawnX, spawnY);
 
-			// generate points 
+			// generate points of asteroid
 			for (int point = 0; point < numPoints; point++) {
 				int currAngle = point * 360 / numPoints;
 				double x = scale * Math.cos(Math.toRadians(currAngle));
@@ -255,15 +192,18 @@ class AsteroidsGame extends Game {
 				asteroidPoints[point] = new Point(x, y);
 			}
 
-			// add new asteroid to list of asteroids 
+			// check if a golden asteroid can be spawned
 			if (GameData.goldenAsteroid == false && GameData.points >= 1000) {
 
+				// golden asteroids can only be spawned once
 				GameData.goldenAsteroid = true;
-				scale = 20;
+
+				// randomize numbe of sides and set its scale
 				numPoints = random.nextInt(5, 12) * 2;
+				scale = 20;
 				asteroidPoints = new Point[numPoints];
-				
-				// generate points 
+
+				// generate asteroid points
 				for (int point = 0; point < numPoints; point++) {
 					int currAngle = point * 360 / numPoints;
 					double x = scale * Math.cos(Math.toRadians(currAngle));
@@ -274,74 +214,88 @@ class AsteroidsGame extends Game {
 					}
 					asteroidPoints[point] = new Point(x, y);
 				}
-				//spawnPoint = new Point(500, 500);
-				this.asteroids.add(new Asteroid(asteroidPoints, spawnPoint, rotation) {		
-					
+
+				// add asteroid to list of all asteroids
+				this.asteroids.add(new Asteroid(asteroidPoints, spawnPoint, 
+						rotation) {		
+
 					@Override
 					public void move() {
 
-						// calculate change in laser's coordinates using rotation and velocity
-						double changeX = baseVelocity * 2 * Math.cos(Math.toRadians(this.rotation));
-						double changeY = baseVelocity * 2 * Math.sin(Math.toRadians(this.rotation));
+						// calculate change in asteroid's coordinates using 
+						// rotation and velocity
+						double changeX = baseVelocity * 2 * 
+								Math.cos(Math.toRadians(this.rotation));
+						double changeY = baseVelocity * 2 * 
+								Math.sin(Math.toRadians(this.rotation));
 
-						// change laser's position
-						double currX = this.position.getX(), currY = this.position.getY();
+						// update asteroid's position
+						double currX = this.position.getX(), currY = 
+								this.position.getY();
 						this.position.setX(currX - changeX);
 						this.position.setY(currY - changeY);
 					}
+
 					@Override
 					public void paint(Graphics brush) {
 						brush.setColor(Color.yellow);
 
-				    	// access Polygon's shape instance variable 
-				    	Point[] spaceshipPoints = this.getPoints();
-				    	
-				    	// loop through Polygon instance variable for points   	
-				    	int numPoints = spaceshipPoints.length;
-				    	int[] xPoints = new int[numPoints], yPoints = new int[numPoints];
-				    	
-				    	// create two arrays for x-coords and y-coords
-				    	for (int idx = 0; idx < numPoints; idx++) {
-				    		xPoints[idx] = (int) spaceshipPoints[idx].getX();
-				    		yPoints[idx] = (int) spaceshipPoints[idx].getY();
-				    	}
-				    	
-				    	// draw spaceship using x-coords and y-coords
-				    	brush.fillPolygon(xPoints, yPoints, numPoints);
+						// access Polygon's shape instance variable 
+						Point[] spaceshipPoints = this.getPoints();
+
+						// loop through Polygon instance variable for points   	
+						int numPoints = spaceshipPoints.length;
+						int[] xPoints = new int[numPoints], yPoints = new 
+								int[numPoints];
+
+						// create two arrays for x-coords and y-coords
+						for (int idx = 0; idx < numPoints; idx++) {
+							xPoints[idx] = (int) spaceshipPoints[idx].getX();
+							yPoints[idx] = (int) spaceshipPoints[idx].getY();
+						}
+
+						// draw asteroid using x-coords and y-coords
+						brush.fillPolygon(xPoints, yPoints, numPoints);
 						brush.setColor(new Color(180, 160, 140));
-				    }
-					
-					public void destroy() {
+					}
+
+					@Override
+					public void changePoints(Boss boss) {
 						GameData.points += 1000;
 						GameData.goldenAsteroid = false;
 					}
 				});
-			} else {
-				this.asteroids.add(new Asteroid(asteroidPoints, spawnPoint, rotation));
-			}
 
-			
-			// add random CD to timer
-			GameData.asteroidTimer += GameData.asteroidSpawnFactor * random.nextInt(50, 100);
+				// spawn a normal asteroid if golden asteroid not spawned
+			} else {this.asteroids.add(new Asteroid(asteroidPoints, spawnPoint, 
+					rotation));}
+
+			// reset cooldown of asteroid spawn timer and decrease it by the
+			// current spawn factor
+			GameData.asteroidTimer += GameData.asteroidSpawnFactor * 
+					random.nextInt(50, 100);
+
+			// decrease asteroid spawn factor each time an asteroid is spawned
 			if (GameData.asteroidSpawnFactor > 0.1) {
 				GameData.asteroidSpawnFactor *= .995;
 			}
 		}
+
+		// decrement the cooldown to spawn next asteroid
 		GameData.asteroidTimer--;
 	}
-	
-	
+
+
 	/**
-	* This is the main game loop.
-	* The main game loop updates the needed variables.
-	* It also calls the move and paint methods of the game objects.
-	* 
-	* 
-	* @author Declan Amoako
-	* @author Allen Bai
-	* 
-	*/
-	public void updateGame(Graphics brush) {
+	 * This is the main game loop.
+	 * The main game loop updates the spaceship (and lasers), asteroids, 
+	 * background and boss.
+	 * It calls the move and paint methods of the game objects.
+	 * 
+	 * @param brush
+	 * 
+	 */
+	private void updateGame(Graphics brush) {
 
 		// decrement time until first asteroid spawn
 		if (GameData.startTimer > 0) {
@@ -353,57 +307,83 @@ class AsteroidsGame extends Game {
 		// update background
 		brush.setColor(Color.black);
 		this.background.paint(brush);
-		
-		// update points
+
+		// update player's score
 		brush.setColor(Color.white);
 		brush.setFont(new Font("Impact", Font.PLAIN, 30));
 		brush.drawString("Points: " + GameData.points, 20, this.height - 90);
-		
+
+		// update player's lives
 		brush.setColor(Color.red);
 		brush.setFont(new Font("Helvetica", Font.PLAIN, 30));
-		
-		
-		if(this.spaceship.collides(this.boss) && !this.spaceship.getInv() && this.boss.getDisplay()) {
-			this.spaceship.takeHealth(1);
-			this.spaceship.setInv(true);
-		}
-		
-		
-		switch (this.spaceship.getHealth()) {
-			case 3:
-				brush.drawString("❤️❤️❤️", 20, this.height/20);
-				break;
-			case 2:
-				brush.drawString("❤️❤️", 20, this.height/20);
-				break;
-			case 1:
-				brush.drawString("❤️", 20, this.height/20);
-				break;
-			default:
-				brush.drawString("", 20, this.height/20);
-				GameData.gameOver = true;
-				break;
-		}
+		updatePlayerLives(brush);
 
-		// move and update spaceship (includes lasers)
+		// move and update spaceship (including lasers)
 		brush.setColor(Color.white);
 		this.spaceship.takeInput();
 		this.spaceship.paint(brush, this.asteroids, this.background, this.boss);
-		
-		
-		//If ThresHold reached
-		if(GameData.points == GameData.bossThreshold && !this.boss.getDisplay()) {
-			this.boss.setDisplay();
+		spaceship.wrapScreen(this.width, this.height);
+
+		// check if player has enough points to spawn next boss
+		if (GameData.points >= GameData.bossThreshold && 
+				!this.boss.getVisibility()) {
+			this.boss.changeVisibility();
 			GameData.bossThreshold *= 2;
 		}
-		
-		//If the boss exists and is displayable do this
-		if(this.boss != null && this.boss.getDisplay()) {
-			//rotateBoss();
-			
+
+		// move and update boss' lives and position on screen 
+		updateBossLives(brush);
+		this.boss.move();
+		this.boss.paint(brush);
+		this.boss.wrapScreen(this.width, this.height);
+
+		// move and update all asteroids
+		updateAsteroids(brush);
+	}
+
+	/**
+	 * Updates the hearts of the player displayed on screen, checking for
+	 * collisions with the boss.
+	 * 
+	 * @param brush
+	 * 
+	 */
+	private void updatePlayerLives(Graphics brush) {
+		if (this.spaceship.collides(this.boss) && !this.spaceship.getInv() && 
+				this.boss.getVisibility()) {
+			this.spaceship.getHit();
+			this.spaceship.setInv(true);
+		}
+		switch (this.spaceship.getHealth()) {
+		case 3:
+			brush.drawString("❤️❤️❤️", 20, this.height / 20);
+			break;
+		case 2:
+			brush.drawString("❤️❤️", 20, this.height / 20);
+			break;
+		case 1:
+			brush.drawString("❤️", 20, this.height / 20);
+			break;
+		default:
+			brush.drawString("", 20, this.height / 20);
+			GameData.gameOver = true;
+			break;
+		}
+	}
+
+	/**
+	 * Updates the hearts of the boss displayed on screen, checking if the boss
+	 * is currenlty on screen.
+	 * 
+	 * @param brush
+	 * 
+	 */
+	private void updateBossLives(Graphics brush) {
+
+		// display current boss's lives when on screen
+		if (this.boss != null && this.boss.getVisibility()) {
 			brush.setColor(Color.red);
 			brush.setFont(new Font("Helvetica", Font.PLAIN, 30));
-			//Boss Health
 			switch (this.boss.getHealth()) {
 			case 5:
 				brush.drawString("❤️❤️❤️❤️❤️", 20, this.height/10);
@@ -423,119 +403,81 @@ class AsteroidsGame extends Game {
 			default:
 				brush.drawString("", 20, this.height/20);
 				this.spaceship.setHealth(3);
-				this.boss.setDisplay();
+				this.boss.changeVisibility();
 				break;
 			}
-			
-			this.boss.move();
-			this.boss.paint(brush);
-			this.boss.wrapScreen(this.width, this.height);
-			
 		}
-
-		// adjustElementPositions();
-		spaceship.wrapScreen(this.width, this.height);
-
-		// move and update all asteroids
-		updateAsteroids(brush);
 	}
-	
+
 	/**
-	* Private method used to update the asteroids currently in the game.
-	* If an asteroid is off the screen this method handles removing it
-	* If an asteroid is on the screen this methods handles moving and painting it.
-	* 
-	* @author Declan Amoako
-	* @author Allen Bai
-	* 
-	*/
+	 * Updates all asteroids, moving and painting their new positions on screen.
+	 * Asteroids off screen will be removed.
+	 * 
+	 * @param brush
+	 */
 	private void updateAsteroids(Graphics brush) {
+
+		// create new list of asteroids that are offscreen
 		ArrayList<Asteroid> toRemove = new ArrayList<>();
 
-		
+		// loop through all current asteroids
 		for (Asteroid a : this.asteroids) {
-			
-			// move asteroids and update on screen
+
+			// move and paint each asteroid 
 			brush.setColor(new Color(180, 160, 140));
 			a.paint(brush);
 			a.move();
-			
+
 			// check if every asteroid's point is on screen
-			if (!asteroidOnScreen(a)) {
-				
+			if (!this.background.collides(a)) {
+
 				// if not on screen, add to list of astoierds to be removed
 				toRemove.add(a);
 			}
 		}
 
-		// remove all asteroids off screen from this.asteroids ArrayList
+		// remove all asteroids off screen from game's list of asteroids
 		for (Asteroid removedAsteroid : toRemove) {
 			this.asteroids.remove(removedAsteroid);
 		}
 	}
 
 	/**
-	* Method used to check if an asteroid is on the screen or not.
-	* It does this by checking if the background contains the asteroid.
-	* 
-	* 
-	* @author Declan Amoako
-	* @author Allen Bai
-	* 
-	*/
-	public boolean asteroidOnScreen(Asteroid a) {
-		for (Point p : a.getPoints()) {
-			if (this.background.contains(p)) {
-				return true;
-			}
-		}
-		return false;
-	}
-
-	
-	/**
-	* The main paint for AsteroidsGame.
-	* This is a wrapper method that encapsulates more complex methods.
-	* 
-	* @param brush is the current graphics context
-	* @author Declan Amoako
-	* @author Allen Bai
-	*/
+	 * Updates the screen by calling updateGame unless the game is over.
+	 * 
+	 * @param brush
+	 * 
+	 */
 	public void paint(Graphics brush) {
-
+		
+		// check if gamve over
 		if (GameData.gameOver == true) {
 			endGame(brush);
 			return;
 		}
-		
+
 		// update game 
 		updateGame(brush);
 	}
-	
+
 	/**
-	* This method is used to display the End Game screen.
-	* Does not do anything apart from display some text
-	* 
-	* 
-	* @author Declan Amoako
-	* @author Allen Bai
-	* 
-	*/
+	 * Displays a game over screen with the player's total score if the player
+	 * has no more lives.
+	 * 
+	 * @param brush
+	 * 
+	 */
 	private void endGame(Graphics brush) {
 		brush.setColor(Color.white);
 		brush.setFont(new Font("Impact", Font.PLAIN, 30));
 		brush.drawString("GAME OVER", this.width / 2 - 100, this.height / 2 - 100);
 		brush.drawString("SCORE: " + GameData.points, this.width / 2 - 100, this.height / 2);
 	}
-	
+
 	/**
-	* The main method for AsteroidsGame
-	* 
-	* 
-	* @author Declan Amoako
-	* @author Allen Bai
-	* 
-	*/
+	 * Main method to get game running.
+	 * 
+	 */
 	public static void main(String[] args) {
 		AsteroidsGame a = new AsteroidsGame();
 		a.repaint();
