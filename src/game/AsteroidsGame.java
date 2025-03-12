@@ -382,26 +382,29 @@ class AsteroidsGame extends Game {
 
 		// display current boss's lives when on screen
 		if (this.boss != null && this.boss.getVisibility()) {
-			brush.setColor(Color.red);
+			brush.setColor(Color.yellow);
 			brush.setFont(new Font("Helvetica", Font.PLAIN, 30));
+			Point position = this.boss.position;
+			int x = (int) position.getX() + 50;
+			int y = (int) position.getY() - 10;
 			switch (this.boss.getHealth()) {
 			case 5:
-				brush.drawString("❤️❤️❤️❤️❤️", 20, this.height/10);
+				brush.drawString("❤️❤️❤️❤️❤️", x, y);
 				break;
 			case 4:
-				brush.drawString("❤️❤️❤️❤️", 20, this.height/10);
+				brush.drawString("❤️❤️❤️❤️", x, y);
 				break;
 			case 3:
-				brush.drawString("❤️❤️❤️", 20, this.height/10);
+				brush.drawString("❤️❤️❤️", x, y);
 				break;
 			case 2:
-				brush.drawString("❤️❤️", 20, this.height/10);
+				brush.drawString("❤️❤️", x, y);
 				break;
 			case 1:
-				brush.drawString("❤️", 20, this.height/10);
+				brush.drawString("❤️", x, y);
 				break;
 			default:
-				brush.drawString("", 20, this.height/20);
+				brush.drawString("", x, y);
 				this.spaceship.setHealth(3);
 				this.boss.changeVisibility();
 				break;
