@@ -23,10 +23,10 @@ public class Asteroid extends Polygon {
 	
     public Asteroid(Point[] points, Point offset, double rotation) {
         super(points, offset, rotation);
-    }
-    
+    }    
 
-	public void move() {	
+	public void move() {
+		
 		// calculate change in laser's coordinates using rotation and velocity
 		double changeX = baseVelocity * Math.cos(Math.toRadians(this.rotation));
 		double changeY = baseVelocity * Math.sin(Math.toRadians(this.rotation));

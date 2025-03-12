@@ -391,13 +391,13 @@ class AsteroidsGame extends Game {
 		this.spaceship.paint(brush, this.asteroids, this.background, this.boss);
 		
 		
-		//If ThresHold reached
-		if(GameData.points == GameData.bossThreshold && !this.boss.getDisplay()) {
+		// if threshold reached
+		if(GameData.points >= GameData.bossThreshold && !this.boss.getDisplay()) {
 			this.boss.setDisplay();
 			GameData.bossThreshold *= 2;
 		}
 		
-		//If the boss exists and is displayable do this
+		// if the boss exists and is displayable do this
 		if(this.boss != null && this.boss.getDisplay()) {
 			//rotateBoss();
 			
