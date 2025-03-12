@@ -31,13 +31,13 @@ class AsteroidsGame extends Game {
 	 * 
 	 */
 	public static class GameData {
-		public static int points = 0;
-		public static int startTimer = 100;
-		public static int asteroidTimer = 0;
-		public static double asteroidSpawnFactor = 1;
-		public static boolean goldenAsteroid = false;
-		public static boolean gameOver = false;
-		public static int bossThreshold = 500;
+		protected static int points = 0;
+		private static int startTimer = 100;
+		private static int asteroidTimer = 0;
+		private static double asteroidSpawnFactor = 1;
+		private static boolean goldenAsteroid = false;
+		private static boolean gameOver = false;
+		private static int bossThreshold = 500;
 	}
 
 	private Spaceship spaceship;

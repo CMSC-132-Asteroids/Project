@@ -19,5 +19,5 @@ public interface AsteroidRotator {
 	* @return double representing the angle facing toward the spaceship
 	* 
 	*/
-	public double rotate(double angle);
+	double rotate(double angle);
 }
