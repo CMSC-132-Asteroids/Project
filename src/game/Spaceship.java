@@ -6,6 +6,8 @@ import java.awt.event.*;
 import java.util.Arrays;
 import java.util.*;
 
+// FINAL
+
 /**
  * Spaceship is a class that represents the player and holds all the logic for 
  * the player.
