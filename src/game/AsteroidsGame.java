@@ -355,13 +355,13 @@ class AsteroidsGame extends Game {
 		}
 		switch (this.spaceship.getHealth()) {
 		case 3:
-			brush.drawString("❤️❤️❤️", 20, this.height / 20);
+			brush.drawString("♥♥♥", 20, this.height / 20);
 			break;
 		case 2:
-			brush.drawString("❤️❤️", 20, this.height / 20);
+			brush.drawString("♥♥", 20, this.height / 20);
 			break;
 		case 1:
-			brush.drawString("❤️", 20, this.height / 20);
+			brush.drawString("♥", 20, this.height / 20);
 			break;
 		default:
 			brush.drawString("", 20, this.height / 20);
@@ -388,19 +388,19 @@ class AsteroidsGame extends Game {
 			int y = (int) position.getY() - 10;
 			switch (this.boss.getHealth()) {
 			case 5:
-				brush.drawString("❤️❤️❤️❤️❤️", x, y);
+				brush.drawString("♥♥♥♥♥", x, y);
 				break;
 			case 4:
-				brush.drawString("❤️❤️❤️❤️", x, y);
+				brush.drawString("♥♥♥♥", x, y);
 				break;
 			case 3:
-				brush.drawString("❤️❤️❤️", x, y);
+				brush.drawString("♥♥♥", x, y);
 				break;
 			case 2:
-				brush.drawString("❤️❤️", x, y);
+				brush.drawString("♥♥", x, y);
 				break;
 			case 1:
-				brush.drawString("❤️", x, y);
+				brush.drawString("♥", x, y);
 				break;
 			default:
 				brush.drawString("", x, y);
