@@ -136,7 +136,7 @@ class Polygon {
 	* Default paint method for any shape that uses its poitns and the 
 	* fillPolygon method from the Graphics class to update shpaes on screen.
 	* 
-	* @param another Polygon object to check for collision
+	* @param other another Polygon object to check for collision
 	* @return boolean that represents whether the two polygons are colliding
 	*/
     protected boolean collides(Polygon other) {
@@ -159,8 +159,8 @@ class Polygon {
      * Sends an object to the other side of the screen if all its points pass
      * a given edge (top, bottom, left or right).
      * 
-     * @param width of the screen
-     * @param height of the screen
+     * @param width width of the screen
+     * @param height height of the screen
      * 
      */
 	protected void wrapScreen(int width, int height) {
