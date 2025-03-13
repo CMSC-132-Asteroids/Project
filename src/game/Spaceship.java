@@ -91,9 +91,9 @@ public class Spaceship extends Polygon implements KeyListener, Damagable {
 	 * with either the boss or asteroids.
 	 * 
 	 * @param brush
-	 * @param list of current asteroids on screen
-	 * @param background of the current game
-	 * @param current boss
+	 * @param asteroids list of current asteroids on screen
+	 * @param background background of the current game
+	 * @param boss current boss
 	 * 
 	 */
 	public void paint(Graphics brush, ArrayList<Asteroid> asteroids, 
@@ -271,7 +271,7 @@ public class Spaceship extends Polygon implements KeyListener, Damagable {
 	/**
 	 * Set the spaceship's invulnerability status.
 	 * 
-	 * @param boolean represent whether spaceship should invulnerable or not
+	 * @param val boolean represent whether spaceship should invulnerable or not
 	 */
 	protected void setInv(boolean val) {
 		this.invulnerable = val;
@@ -281,7 +281,7 @@ public class Spaceship extends Polygon implements KeyListener, Damagable {
 	/**
 	 * Sets health of spaceship.
 	 * 
-	 * @param new health of spaceship
+	 * @param health new health of spaceship
 	 * 
 	 */
 	protected void setHealth(int health) {
@@ -313,7 +313,7 @@ public class Spaceship extends Polygon implements KeyListener, Damagable {
 	/**
 	 * Takes in keystrokes and adds them to set of keys being pressed.
 	 * 
-	 * @param current key beng pressed
+	 * @param e current key beng pressed
 	 * 
 	 */
 	public void keyPressed(KeyEvent e) {currKeys.add(e.getKeyCode());}
@@ -321,7 +321,7 @@ public class Spaceship extends Polygon implements KeyListener, Damagable {
 	/**
 	 * Takes in keystrokes and removes them from set of keys being pressed.
 	 * 
-	 * @param current key beng released
+	 * @param e current key beng released
 	 * 
 	 */
 	public void keyReleased(KeyEvent e) {currKeys.remove(e.getKeyCode());}
@@ -329,7 +329,7 @@ public class Spaceship extends Polygon implements KeyListener, Damagable {
 	/**
 	 * Method that checks when keys are typed (unutilized).
 	 * 
-	 * @param current key beng typed
+	 * @param e current key beng typed
 	 * 
 	 */
 	public void keyTyped(KeyEvent e) {}

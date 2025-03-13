@@ -51,7 +51,7 @@ public class Asteroid extends Polygon {
 	/**
 	* Increase or decrease player points based on if the game's boss is visible.
 	* 
-	* @param boss 
+	* @param boss current boss
 	* 
 	*/
     protected void changePoints(Boss boss) {
