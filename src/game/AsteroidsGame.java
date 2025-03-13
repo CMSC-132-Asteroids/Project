@@ -22,7 +22,7 @@ import game.Point;
 class AsteroidsGame extends Game {
 
 	/**
-	 * The GameData inner class is designed to hold all the data needed for the game 
+	 * The GameData inner class is designed to hold all the data needed the for game 
 	 * such as current score, whether the game is over, a cooldown for the
 	 * next asteroid spawn and the points necessary for the boss to spawn.
 	 * 
@@ -356,13 +356,13 @@ class AsteroidsGame extends Game {
 		}
 		switch (this.spaceship.getHealth()) {
 		case 3:
-			brush.drawString("", 20, this.height / 20);
+			brush.drawString("❤️❤️❤️", 20, this.height / 20);
 			break;
 		case 2:
-			brush.drawString("", 20, this.height / 20);
+			brush.drawString("❤️❤️", 20, this.height / 20);
 			break;
 		case 1:
-			brush.drawString("", 20, this.height / 20);
+			brush.drawString("❤️", 20, this.height / 20);
 			break;
 		default:
 			brush.drawString("", 20, this.height / 20);
@@ -392,16 +392,16 @@ class AsteroidsGame extends Game {
 				brush.drawString("", x, y);
 				break;
 			case 4:
-				brush.drawString("", x, y);
+				brush.drawString("❤️❤️❤️❤️", x, y);
 				break;
 			case 3:
-				brush.drawString("", x, y);
+				brush.drawString("❤️❤️❤️", x, y);
 				break;
 			case 2:
-				brush.drawString("", x, y);
+				brush.drawString("❤️❤️", x, y);
 				break;
 			case 1:
-				brush.drawString("", x, y);
+				brush.drawString("❤️", x, y);
 				break;
 			default:
 				brush.drawString("", x, y);
