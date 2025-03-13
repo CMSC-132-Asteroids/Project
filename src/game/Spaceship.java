@@ -35,8 +35,8 @@ public class Spaceship extends Polygon implements KeyListener, Damagable {
 	 * 
 	 */
 	private class Laser extends Polygon {
-		static double laserVel = 10.0;
-		static double laserCD = 0;
+		private static double laserVelocity = 10.0;
+		private static double laserCD = 0;
 
 		/**
 		 * Initializes a new Laser using Polygon constructor.
@@ -55,11 +55,13 @@ public class Spaceship extends Polygon implements KeyListener, Damagable {
 		 * at the time laser was shot and the laser's velocity.
 		 * 
 		 */
-		public void move() {
+		private void move() {
 
 			// calculate change in laser's coordinates using rotation and velocity
-			double changeX = laserVel * Math.cos(Math.toRadians(this.rotation - 90));
-			double changeY = laserVel * Math.sin(Math.toRadians(this.rotation - 90));
+			double changeX = laserVelocity * 
+					Math.cos(Math.toRadians(this.rotation - 90));
+			double changeY = laserVelocity * 
+					Math.sin(Math.toRadians(this.rotation - 90));
 
 			// change laser's position
 			double currX = this.position.getX(), currY = this.position.getY();
@@ -87,9 +89,9 @@ public class Spaceship extends Polygon implements KeyListener, Damagable {
 	 * with either the boss or asteroids.
 	 * 
 	 * @param brush
-	 * @param asteroids list of current asteroids on screen
-	 * @param background background of the current game
-	 * @param boss current boss object
+	 * @param list of current asteroids on screen
+	 * @param background of the current game
+	 * @param current boss
 	 * 
 	 */
 	public void paint(Graphics brush, ArrayList<Asteroid> asteroids, 
@@ -195,7 +197,7 @@ public class Spaceship extends Polygon implements KeyListener, Damagable {
 	}
 
 	/**
-	 * Update spaceship's position based on current velocity. Move and turn
+	 * Update spacesihp's position based on current velocity. Move and turn
 	 * velocity changed by @see takeInput();
 	 * 
 	 */
@@ -267,7 +269,7 @@ public class Spaceship extends Polygon implements KeyListener, Damagable {
 	/**
 	 * Set the spaceship's invulnerability status.
 	 * 
-	 * @param val boolean representing whether spaceship should be invulnerable or not
+	 * @param boolean represent whether spaceship should invulnerable or not
 	 */
 	protected void setInv(boolean val) {
 		this.invulnerable = val;
@@ -277,7 +279,7 @@ public class Spaceship extends Polygon implements KeyListener, Damagable {
 	/**
 	 * Sets health of spaceship.
 	 * 
-	 * @param health new health of the spaceship
+	 * @param new health of spaceship
 	 * 
 	 */
 	protected void setHealth(int health) {
@@ -309,7 +311,7 @@ public class Spaceship extends Polygon implements KeyListener, Damagable {
 	/**
 	 * Takes in keystrokes and adds them to set of keys being pressed.
 	 * 
-	 * @param e current key being pressed
+	 * @param current key beng pressed
 	 * 
 	 */
 	public void keyPressed(KeyEvent e) {currKeys.add(e.getKeyCode());}
@@ -317,7 +319,7 @@ public class Spaceship extends Polygon implements KeyListener, Damagable {
 	/**
 	 * Takes in keystrokes and removes them from set of keys being pressed.
 	 * 
-	 * @param e current key being released
+	 * @param current key beng released
 	 * 
 	 */
 	public void keyReleased(KeyEvent e) {currKeys.remove(e.getKeyCode());}
@@ -325,7 +327,7 @@ public class Spaceship extends Polygon implements KeyListener, Damagable {
 	/**
 	 * Method that checks when keys are typed (unutilized).
 	 * 
-	 * @param e current key being typed
+	 * @param current key beng typed
 	 * 
 	 */
 	public void keyTyped(KeyEvent e) {}
