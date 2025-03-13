@@ -262,7 +262,6 @@ class AsteroidsGame extends Game {
 					@Override
 					public void changePoints(Boss boss) {
 						GameData.points += 1000;
-						GameData.goldenAsteroid = false;
 					}
 				});
 

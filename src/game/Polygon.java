@@ -107,64 +107,64 @@ class Polygon {
 	}
 
 	/**
-	 * Default paint method for any shape that uses its points and the 
-	 * fillPolygon method from the Graphics class to update shpaes on screen.
-	 * 
-	 * @param brush
-	 * 
-	 */
+	* Default paint method for any shape that uses its points and the 
+	* fillPolygon method from the Graphics class to update shpaes on screen.
+	* 
+	* @param brush
+	* 
+	*/
 	protected void paint(Graphics brush) {
-
-		// access Polygon's shape instance variable 
-		Point[] polygonPoints = this.getPoints();
-
-		// loop through Polygon instance variable for points   	
-		int numPoints = polygonPoints.length;
-		int[] xPoints = new int[numPoints], yPoints = new int[numPoints];
-
-		// create two arrays for x-coords and y-coords
-		for (int idx = 0; idx < numPoints; idx++) {
-			xPoints[idx] = (int) polygonPoints[idx].getX();
-			yPoints[idx] = (int) polygonPoints[idx].getY();
-		}
-
-		// cdraw spaceship using x-coords and y-coords
-		brush.fillPolygon(xPoints, yPoints, numPoints);
-	}
-
+    	
+    	// access Polygon's shape instance variable 
+    	Point[] polygonPoints = this.getPoints();
+    	
+    	// loop through Polygon instance variable for points   	
+    	int numPoints = polygonPoints.length;
+    	int[] xPoints = new int[numPoints], yPoints = new int[numPoints];
+    	
+    	// create two arrays for x-coords and y-coords
+    	for (int idx = 0; idx < numPoints; idx++) {
+    		xPoints[idx] = (int) polygonPoints[idx].getX();
+    		yPoints[idx] = (int) polygonPoints[idx].getY();
+    	}
+    	
+    	// cdraw spaceship using x-coords and y-coords
+    	brush.fillPolygon(xPoints, yPoints, numPoints);
+    }
+    
 	/**
-	 * Default paint method for any shape that uses its poitns and the 
-	 * fillPolygon method from the Graphics class to update shpaes on screen.
-	 * 
-	 * @param another Polygon object to check for collision
-	 * @return boolean that represents whether the two polygons are colliding
-	 */
-	protected boolean collides(Polygon other) {
-
-		// loops through all points of the other polygon
-		for (Point point: other.getPoints()) {
-
-			// if a point in the other polygon are contained within "this"
-			// then the shapes are touching
-			if (this.contains(point)) {
-				return true;
-			}
-		}
-
-		// otherwise they are not touching
-		return false;
-	}
-
-	/**
-	 * Sends an object to the other side of the screen if all its points pass
-	 * a given edge (top, bottom, left or right).
-	 * 
-	 * @param width of the screen
-	 * @param height of the screen
-	 * 
-	 */
+	* Default paint method for any shape that uses its poitns and the 
+	* fillPolygon method from the Graphics class to update shpaes on screen.
+	* 
+	* @param another Polygon object to check for collision
+	* @return boolean that represents whether the two polygons are colliding
+	*/
+    protected boolean collides(Polygon other) {
+    	
+    	// loops through all points of the other polygon
+    	for (Point point: other.getPoints()) {
+    		
+    		// if a point in the other polygon are contained within "this"
+    		// then the shapes are touching
+    			if (this.contains(point)) {
+    				return true;
+    			}
+    	}
+    	
+    	// otherwise they are not touching
+    	return false;
+    }
+    
+    /**
+     * Sends an object to the other side of the screen if all its points pass
+     * a given edge (top, bottom, left or right).
+     * 
+     * @param width of the screen
+     * @param height of the screen
+     * 
+     */
 	protected void wrapScreen(int width, int height) {
-
+		
 		// find current position
 		Point position = this.position;
 		double currX = position.getX();
