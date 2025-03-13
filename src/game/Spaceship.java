@@ -88,7 +88,7 @@ public class Spaceship extends Polygon implements KeyListener, Damagable {
 	 * 
 	 * @param brush
 	 * @param asteroids list of current asteroids on screen
-	 * @param background of the current game
+	 * @param background background of the current game
 	 * @param boss current boss object
 	 * 
 	 */
@@ -195,7 +195,7 @@ public class Spaceship extends Polygon implements KeyListener, Damagable {
 	}
 
 	/**
-	 * Update spacesihp's position based on current velocity. Move and turn
+	 * Update spaceship's position based on current velocity. Move and turn
 	 * velocity changed by @see takeInput();
 	 * 
 	 */
@@ -267,7 +267,7 @@ public class Spaceship extends Polygon implements KeyListener, Damagable {
 	/**
 	 * Set the spaceship's invulnerability status.
 	 * 
-	 * @param val boolean representing whether spaceship should invulnerable or not
+	 * @param val boolean representing whether spaceship should be invulnerable or not
 	 */
 	protected void setInv(boolean val) {
 		this.invulnerable = val;

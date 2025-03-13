@@ -15,7 +15,7 @@ public interface AsteroidRotator {
 	/**
 	* Calculates the new rotation of an asteroid.
 	* 
-	* @param takes in the current rotation of the asteroid
+	* @param angle takes in the current rotation of the asteroid
 	* @return double representing the angle facing toward the spaceship
 	* 
 	*/
